@@ -12,7 +12,7 @@ const Home = props => {
     <div className="Home">
       <div className="Home-header">
         <img src={logo} className="Home-logo" alt="logo" />
-        <h2>Welcome to Test 9</h2>
+        <h2>Welcome to Test 10</h2>
       </div>
       <p className="Home-intro">
         To get started, edit <code>src/App.js</code> or{' '}
