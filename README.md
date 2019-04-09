@@ -54,7 +54,7 @@ Be advised that this software is at a very early stage and is considered experim
 
 ## Motivation
 
-My desire was to create a static-like website that delivers content blazingly fast while allowing me to modify both content and content with zero effort.
+My desire was to create a static-like website that delivers content blazingly fast while allowing me to modify both content and code with zero effort.
 
 The result is Graze.
 
