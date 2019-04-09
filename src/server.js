@@ -7,6 +7,8 @@ import { getDataFromTree, renderToStringWithData } from 'react-apollo'
 import { getClient } from './services/graphcms'
 import fetch from 'node-fetch'
 
+import { ServerStyleSheet } from 'styled-components'
+
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST)
 
 const server = express()
@@ -14,6 +16,7 @@ server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
   .get('/*', (req, res) => {
+    const sheet = new ServerStyleSheet()
     const client = getClient({
       // ssrForceFetchDelay: 10000,
       ssrMode: true,
@@ -27,8 +30,9 @@ server
     )
     
 
-    const repo = renderToStringWithData(<Wrap />)
-
+    const repo = renderToStringWithData(sheet.collectStyles(<Wrap />))
+    const styleTags = sheet.getStyleTags() 
+    sheet.seal()
     repo.then((c) => {
       const initialState = client.extract()
   
@@ -56,6 +60,7 @@ server
       </head>
       <body>
           <div id="root">${c}</div>
+          ${styleTags}
           <script>window.__APOLLO_STATE__=${JSON.stringify(initialState).replace(/</g, '\\u003c')}</script>
       </body>
   </html>`
