@@ -79,6 +79,24 @@ server
           <meta name="msapplication-wide310x150logo" content="/fi/mstile-310x150.png" />
           <meta name="msapplication-square310x310logo" content="/fi/mstile-310x310.png" />
 
+          <!-- Primary Meta Tags -->
+          <title>Graze - Modern Content Management</title>
+          <meta name="title" content="Graze - Modern Content Management">
+          <meta name="description" content="Blazing fast modern solution for content sites and web apps">
+
+          <!-- Open Graph / Facebook -->
+          <meta property="og:type" content="website">
+          <meta property="og:url" content="http://graze.site/">
+          <meta property="og:title" content="Graze - Modern Content Management">
+          <meta property="og:description" content="Blazing fast modern solution for content sites and web apps">
+          <meta property="og:image" content="/fi/image.png">
+
+          <!-- Twitter -->
+          <meta property="twitter:card" content="summary_large_image">
+          <meta property="twitter:url" content="http://graze.site/">
+          <meta property="twitter:title" content="Graze - Modern Content Management">
+          <meta property="twitter:description" content="Blazing fast modern solution for content sites and web apps">
+          <meta property="twitter:image" content="/fi/image.png">
       </head>
       <body>
           <div id="root">${c}</div>

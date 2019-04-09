@@ -82,9 +82,9 @@ const Home = props => {
           </div>
         </div> 
       </Header>
-      <main className='mw6'>
-        <article className="pa3 pa5-ns"><Mark>{site.homepage.content}</Mark></article>
-      </main>
+      <Content>
+        <article className="mw7 center pa3 pa5-ns"><Mark>{site.homepage.content}</Mark></article>
+      </Content>
 
       <ul className="Home-resources">
         <li>
@@ -105,6 +105,14 @@ const Header = tachyon('header')`
 const Sites = styled.pre`
   text-align: left;
   border: 20px solid #F0F;
+`
+
+const Content = styled(tachyon('article')`
+bg-near-white dark-gray bt b--blue avenir
+`)`
+  pre {
+    overflow-x: auto;
+  }
 `
 
 const page = gql`
