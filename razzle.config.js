@@ -1,3 +1,3 @@
 module.exports = {
-  // modify: require("razzle-heroku"),
+  modify: require("razzle-heroku")
 }
