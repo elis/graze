@@ -48,6 +48,10 @@ Next push to Heroku:
 
 Your app will be deployed to Heroku - follow the CLI output.
 
+## EXPERIMENTAL
+
+Be advised that this software is at a very early stage and is considered experimental - use on production with care.
+
 ## Motivation
 
 My desire was to create a static-like website that delivers content blazingly fast while allowing me to modify both content and content with zero effort.
