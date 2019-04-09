@@ -9,6 +9,10 @@ import Mark from 'react-markdown'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
+import README from '../README.md'
+
+console.log('what is readme?', README)
+
 const BrandIcon = ({dark, ...props}) => typeof dark !== 'undefined'
   ? <svg {...props} viewBox="0 0 599 599" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M549.663 394.093L549.631 203.911L549.627 176.964C549.623 163.027 542.188 150.151 530.116 143.184L318.792 21.2234C306.723 14.2567 291.852 14.2589 279.783 21.23L68.4995 143.26C56.431 150.23 48.9989 163.109 49 177.046L49.0044 203.91L49.0365 394.092L49.0409 421.039C49.0431 434.975 56.4796 447.852 68.5503 454.818L279.874 576.78C291.946 583.747 306.814 583.742 318.883 576.773L530.167 454.741C542.235 447.771 549.668 434.892 549.666 420.954L549.663 394.093Z" fill="#F5F5F5"/>
@@ -48,9 +52,8 @@ const Home = props => {
               <div className="dtc v-mid tr pa3">
                 {site.pages.map(page => (
                   <Link className="f6 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" to={`/${page.slug}`} >{page.title}</Link> 
-
                 ))}
-                <a className="f6 fw4 hover-white no-underline white-70 dib ml2 pv2 ph3 ba" href="/" >GitHub</a> 
+                <a className="f6 fw4 hover-white no-underline white-70 dib ml2 pv2 ph3 ba" href="https://github.com/elis/graze">GitHub</a> 
               </div>
             </nav> 
             <div className="tc-l mt4 mt5-m mt6-l ph3">
@@ -83,17 +86,16 @@ const Home = props => {
           </div>
         </div> 
       </Header>
-      <article class="pa3 pa5-ns"><Mark>{site.homepage.content}</Mark></article>
+      <main className='mw6'>
+        <article className="pa3 pa5-ns"><Mark>{site.homepage.content}</Mark></article>
+      </main>
 
       <ul className="Home-resources">
         <li>
-          <a href="https://github.com/jaredpalmer/razzle">Docs</a>
+          <a href="https://github.com/elis/graze">Docs</a>
         </li>
         <li>
-          <a href="https://github.com/jaredpalmer/razzle/issues">Issues</a>
-        </li>
-        <li>
-          <a href="https://palmer.chat">Community Slack</a>
+          <a href="https://github.com/elis/graze/issues">Issues</a>
         </li>
       </ul>
     </div>

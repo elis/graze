@@ -45,7 +45,7 @@ server
       <head>
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta charset="utf-8" />
-          <title>Welcome to Test/2</title>
+          <title>Graze - Modern Content Management</title>
           <meta name="viewport" content="width=device-width, initial-scale=1">
           ${
             assets.client.css
@@ -57,11 +57,43 @@ server
               ? `<script src="${assets.client.js}" defer></script>`
               : `<script src="${assets.client.js}" defer crossorigin></script>`
           }
+
+          <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/fi/apple-touch-icon-57x57.png" />
+          <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/fi/apple-touch-icon-114x114.png" />
+          <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/fi/apple-touch-icon-72x72.png" />
+          <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/fi/apple-touch-icon-144x144.png" />
+          <link rel="apple-touch-icon-precomposed" sizes="60x60" href="/fi/apple-touch-icon-60x60.png" />
+          <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/fi/apple-touch-icon-120x120.png" />
+          <link rel="apple-touch-icon-precomposed" sizes="76x76" href="/fi/apple-touch-icon-76x76.png" />
+          <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/fi/apple-touch-icon-152x152.png" />
+          <link rel="icon" type="image/png" href="/fi/favicon-196x196.png" sizes="196x196" />
+          <link rel="icon" type="image/png" href="/fi/favicon-96x96.png" sizes="96x96" />
+          <link rel="icon" type="image/png" href="/fi/favicon-32x32.png" sizes="32x32" />
+          <link rel="icon" type="image/png" href="/fi/favicon-16x16.png" sizes="16x16" />
+          <link rel="icon" type="image/png" href="/fi/favicon-128.png" sizes="128x128" />
+          <meta name="application-name" content="Graze - Modern Content Management"/>
+          <meta name="msapplication-TileColor" content="#FFFFFF" />
+          <meta name="msapplication-TileImage" content="/fi/mstile-144x144.png" />
+          <meta name="msapplication-square70x70logo" content="/fi/mstile-70x70.png" />
+          <meta name="msapplication-square150x150logo" content="/fi/mstile-150x150.png" />
+          <meta name="msapplication-wide310x150logo" content="/fi/mstile-310x150.png" />
+          <meta name="msapplication-square310x310logo" content="/fi/mstile-310x310.png" />
+
       </head>
       <body>
           <div id="root">${c}</div>
           ${styleTags}
           <script>window.__APOLLO_STATE__=${JSON.stringify(initialState).replace(/</g, '\\u003c')}</script>
+          <!-- Global site tag (gtag.js) - Google Analytics -->
+          <script async src="https://www.googletagmanager.com/gtag/js?id=UA-138092593-1"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-138092593-1');
+          </script>
+
       </body>
   </html>`
         )
