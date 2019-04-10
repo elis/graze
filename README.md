@@ -7,21 +7,10 @@ It's based on [Razzle](https://github.com/jaredpalmer/razzle/) with a few modifi
 Install graze:
 
 ```
- $ git clone https://github.com/elis/graze my-site
+ $ npx create-graze-app my-site my-heroku-app https://graph-cms-api/
  $ cd my-site
- $ npm i
+ $ npm start
 ```
-
-Add your GraphCMS API end point:
-
-```
- $ echo "RAZZLE_GRAPHCMS_API=https://api-euwest.graphcms.com/v1/cju9qelzv02z401ghexxj2llz/master" > .env.development.local
- // replace api url with your graphcms api end point.
-``` 
-
-Run locally:
-
-` $ npm start`
 
 ## Deploy
 
@@ -30,21 +19,8 @@ Currently Graze supports deployment to Heroku.
 To deploy to Heroku first set the GraphCMS API variable:
 
 ```
-$ heroku config:set -a graze RAZZLE_GRAPHCMS_API=https://api-euwest.graphcms.com/v1/cju9qelzv02z401ghexxj2llz/master
+ $ git push heroku master
 ```
-Replace `graze` with your app name and the api url to your actual graphcms api endpoint.
-
-Next push to Heroku:
-
-```
- $ git init
- $ git add .
- $ git commit -a -m "first"
- $ heroku git:remote -a graze
- // replace `graze` with your app name
-```
-
-` $ git push heroku master`
 
 Your app will be deployed to Heroku - follow the CLI output.
 
