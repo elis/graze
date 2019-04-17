@@ -1,0 +1,12 @@
+{
+  "name": "my-graze-app",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "razzle start",
+    "build": "razzle build",
+    "deploy": "git push heroku master",
+    "test": "razzle test --env=jsdom",
+    "start:prod": "NODE_ENV=production node build/server.js"
+  }
+}
