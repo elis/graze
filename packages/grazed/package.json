@@ -1,9 +1,8 @@
 {
-  "private": true,
-  "name": "graze",
+  "name": "grazed",
   "version": "1.0.0",
   "description": "Graze - Modern Content Management Stack",
-  "homepage": "https://graze.site",
+  "homepage": "https://graze.site/",
   "keywords": [
     "server-side",
     "rendering",
@@ -12,7 +11,8 @@
     "create-react-app",
     "heroku",
     "graphcms",
-    "graze"
+    "graze",
+    "grazed"
   ],
   "author": "Eli Sklar",
   "license": "ISC"
