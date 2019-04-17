@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default ({title, actionTo, cta, children}) => (
+export default ({ title, actionTo, cta, children }) => (
   <section className='ph3 ph5-ns pv5'>
     <article className='mw8 center br2 ba b--light-blue bg-lightest-blue'>
       <div className='dt-ns dt--fixed-ns w-100'>

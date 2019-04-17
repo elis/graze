@@ -1,17 +1,17 @@
 #! /usr/bin/env node
 
-const chalk = require('chalk');
-const program = require('commander');
-const lib = require('..');
-const pkg = require('../package.json');
+const chalk = require('chalk')
+const program = require('commander')
+const lib = require('..')
+const pkg = require('../package.json')
 
-const messages = lib.messages;
-const createGrazeApp = lib.createGrazeApp;
+const messages = lib.messages
+const createGrazeApp = lib.createGrazeApp
 
-let projectName;
-let herokuApp;
-let graphCms;
-let upgrade;
+let projectName
+let herokuApp
+let graphCms
+let upgrade
 
 program
   .version(pkg.version)
@@ -22,15 +22,15 @@ program
   .option('-u, --upgrade', messages.upgrade())
   .allowUnknownOption()
   .on('--help', messages.help)
-  .action(function(name, app, cms, cmd) {
-    projectName = name;
-    herokuApp = app || cmd.app;
-    graphCms = cms || cmd.cms;
-    upgrade = cmd.upgrade;
+  .action(function (name, app, cms, cmd) {
+    projectName = name
+    herokuApp = app || cmd.app
+    graphCms = cms || cmd.cms
+    upgrade = cmd.upgrade
   })
-  .parse(process.argv);
+  .parse(process.argv)
 
-const example = program.example;
+const example = program.example
 
 createGrazeApp({
   projectName,
@@ -38,4 +38,4 @@ createGrazeApp({
   herokuApp,
   graphCms,
   upgrade
-});
+})

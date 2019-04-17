@@ -32,7 +32,7 @@ export default props => {
 
   return (
     <React.Fragment>
-      <MetaStyles 
+      <MetaStyles
         title={site.title}
         description={site.description}
         favicon={site.favicon}
@@ -43,14 +43,14 @@ export default props => {
       )}
       <SiteContext.Provider value={site}>
         <Switch>
-          <Route path='/' exact component={onDemand('index', '/', false, {page: site && site.index, site, error})} />
+          <Route path='/' exact component={onDemand('index', '/', false, { page: site && site.index, site, error })} />
           {pages && !!pages.length && pages.map((page, index) => (
             <Route
               key={`site page ${index}`}
               path={`/${page.slug}`}
-              component={onDemand(page.slug, `/${page.slug}`, false, {page, site, error})} />
+              component={onDemand(page.slug, `/${page.slug}`, false, { page, site, error })} />
           ))}
-          <Route path='/__tutorial' component={onDemand('tutorial', '/__tutorial', false, {pages, site, error})} />
+          <Route path='/__tutorial' component={onDemand('tutorial', '/__tutorial', false, { pages, site, error })} />
           <Route path='/' component={onDemand('404')} />
         </Switch>
       </SiteContext.Provider>
@@ -58,8 +58,8 @@ export default props => {
   )
 }
 
-export const StatsReporting = withRouter(({location, trackingId}) => {
-  const  { pathname, search } = location
+export const StatsReporting = withRouter(({ location, trackingId }) => {
+  const { pathname, search } = location
   const ReactGA = getGA({ trackingId })
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export const StatsReporting = withRouter(({location, trackingId}) => {
 
 const CM = 'https://media.graphcms.com/'
 
-const MetaStyles = ({title, description, favicon, preview, ...props}) => {
+const MetaStyles = ({ title, description, favicon, preview, ...props }) => {
   const favi = favicon && favicon.handle
   const previ = preview && preview.url
 
@@ -98,19 +98,19 @@ const MetaStyles = ({title, description, favicon, preview, ...props}) => {
         {favi && (<meta name='msapplication-square150x150logo' content={`${CM}resize=w:150/${favi}`} />)}
         {favi && (<meta name='msapplication-wide310x150logo' content={`${CM}resize=w:310/${favi}`} />)}
         {favi && (<meta name='msapplication-square310x310logo' content={`${CM}resize=w:310/${favi}`} />)}
-        
-        {title && (<title>{title}</title>)}
-        {title && (<meta name='title' content={title}/>)}
-        {title && (<meta name='application-name' content={title}/>)}
-        {title && (<meta property='twitter:title' content={title}/>)}
-        {title && (<meta property='og:title' content={title}/>)}
-        
-        {description && (<meta property='og:description' content={description}/>)}
-        {description && (<meta property='twitter:description' content={description}/>)}
-        {description && (<meta name='description' content={description}/>)}
 
-        {previ && (<meta name='og:image' content={previ}/>)}
-        {previ && (<meta name='twitter:image' content={previ}/>)}
+        {title && (<title>{title}</title>)}
+        {title && (<meta name='title' content={title} />)}
+        {title && (<meta name='application-name' content={title} />)}
+        {title && (<meta property='twitter:title' content={title} />)}
+        {title && (<meta property='og:title' content={title} />)}
+
+        {description && (<meta property='og:description' content={description} />)}
+        {description && (<meta property='twitter:description' content={description} />)}
+        {description && (<meta name='description' content={description} />)}
+
+        {previ && (<meta name='og:image' content={previ} />)}
+        {previ && (<meta name='twitter:image' content={previ} />)}
 
         <meta name='msapplication-TileColor' content='#FFFFFF' />
 

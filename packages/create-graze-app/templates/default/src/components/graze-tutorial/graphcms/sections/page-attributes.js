@@ -5,10 +5,10 @@ const PageAttributes = props => {
   const ArticleFullBleed = require('../../../articles/full-bleed').default
   return (
     <ArticleFullBleed
-        art={require('../images/graphcms-art.png')}
-        title={'Setting up page attributes and sections'}
-        subtitle={'Graze GraphCMS Advanced Tutorial'}
-      >
+      art={require('../images/graphcms-art.png')}
+      title={'Setting up page attributes and sections'}
+      subtitle={'Graze GraphCMS Advanced Tutorial'}
+    >
       <p className='times lh-copy measure f4 mt0'>
         Congrats on finishing the basic setup! <span role='img' aria-label='Kiwi'>🥝</span>
       </p>

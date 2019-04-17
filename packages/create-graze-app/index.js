@@ -1,9 +1,8 @@
-'use strict';
 
-const createGraze = require('./lib');
-const messages = require('./lib/messages');
+const createGraze = require('./lib')
+const messages = require('./lib/messages')
 
 module.exports = {
   messages: messages,
-  createGrazeApp: createGraze,
-};
+  createGrazeApp: createGraze
+}

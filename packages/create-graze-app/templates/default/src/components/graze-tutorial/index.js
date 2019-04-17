@@ -18,7 +18,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 
 export default props => {
   const { default: GraphCMSTutorial } = require('./graphcms')
-  const { url } = props.match || {url: '__tutorial'}
+  const { url } = props.match || { url: '__tutorial' }
   return (
     <Switch>
       <Route path={[`${url}`, `/__tutorial`]} exact render={p => <TutorialIndex {...p} data={props.data} />} />
@@ -42,8 +42,7 @@ const TutorialIndex = props => {
           subtitle: 'Start building awesome apps with GraphCMS and Razzle'
         }}
         art={<img src={require('./tutorial-art.png')} alt='Tutorial Art' />}
-      >
-      </PageCover>
+      />
       <ArticlesList title='Graze Tutorials' className='mt5'>
         <Article
           slug='/__tutorial/graphcms'

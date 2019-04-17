@@ -1,41 +1,39 @@
-'use strict';
+const path = require('path')
+const fs = require('fs')
+const copyDir = require('./utils/copy-dir')
+const install = require('./utils/install')
+const loadExample = require('./utils/load-example')
+const messages = require('./messages')
 
-const path = require('path');
-const fs = require('fs');
-const copyDir = require('./utils/copy-dir');
-const install = require('./utils/install');
-const loadExample = require('./utils/load-example');
-const messages = require('./messages');
-
-module.exports = function createGrazeApp(opts) {
-  const projectName = opts.projectName;
-  const herokuApp = opts.herokuApp;
-  const graphCms = opts.graphCms;
-  const upgrade = opts.upgrade;
+module.exports = function createGrazeApp (opts) {
+  const projectName = opts.projectName
+  const herokuApp = opts.herokuApp
+  const graphCms = opts.graphCms
+  const upgrade = opts.upgrade
 
   if (!projectName || !herokuApp || !graphCms) {
-    console.log(messages.missingProjectName());
-    process.exit(1);
+    console.log(messages.missingProjectName())
+    process.exit(1)
   }
 
   if (fs.existsSync(projectName)) {
     if (!upgrade) {
-      console.log(messages.alreadyExists(projectName));
-      process.exit(1);
+      console.log(messages.alreadyExists(projectName))
+      process.exit(1)
     } else {
-      console.log(messages.upgrading(projectName));
+      console.log(messages.upgrading(projectName))
     }
   }
 
-  const projectPath = (opts.projectPath = process.cwd() + '/' + projectName);
+  const projectPath = (opts.projectPath = process.cwd() + '/' + projectName)
 
   if (opts.example) {
     loadExample({
       projectName: projectName,
-      example: opts.example,
-    }).then(installWithMessageFactory(opts, true));
+      example: opts.example
+    }).then(installWithMessageFactory(opts, true))
   } else {
-    const templatePath = path.resolve(__dirname, '../templates/default');
+    const templatePath = path.resolve(__dirname, '../templates/default')
 
     copyDir({
       templatePath: templatePath,
@@ -44,15 +42,15 @@ module.exports = function createGrazeApp(opts) {
       upgrade
     })
       .then(installWithMessageFactory(opts))
-      .catch(function(err) {
-        throw err;
-      });
+      .catch(function (err) {
+        throw err
+      })
   }
-};
+}
 
-function installWithMessageFactory(opts, isExample = false) {
-  const projectName = opts.projectName;
-  const projectPath = opts.projectPath;
+function installWithMessageFactory (opts, isExample = false) {
+  const projectName = opts.projectName
+  const projectPath = opts.projectPath
 
   const grazedeps = [
     'axios',
@@ -73,7 +71,7 @@ function installWithMessageFactory(opts, isExample = false) {
     'react-ga'
   ].sort((a, b) => a.length > b.length ? 1 : -1)
 
-  return function installWithMessage() {
+  return function installWithMessage () {
     return install({
       projectName: projectName,
       projectPath: projectPath,
@@ -81,13 +79,13 @@ function installWithMessageFactory(opts, isExample = false) {
       graphCms: opts.graphCms,
       packages: isExample
         ? ['razzle', ...grazedeps]
-        : ['react', 'react-dom', 'react-router-dom', 'razzle', 'express', ...grazedeps],
+        : ['react', 'react-dom', 'react-router-dom', 'razzle', 'express', ...grazedeps]
     })
-      .then(function() {
-        console.log(messages.start(projectName));
+      .then(function () {
+        console.log(messages.start(projectName))
       })
-      .catch(function(err) {
-        throw err;
-      });
-  };
+      .catch(function (err) {
+        throw err
+      })
+  }
 }

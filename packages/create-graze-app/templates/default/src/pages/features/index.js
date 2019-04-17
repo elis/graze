@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-export default ({page, props}) => {
+export default ({ page, props }) => {
   const Page = require('../../components/page').default
   const fm = require('front-matter')
   const Mark = require('react-markdown')
@@ -10,12 +10,12 @@ export default ({page, props}) => {
 
   useEffect(() => {
     try {
-      const {attributes: a, body: b} = fm(page && page.content)
+      const { attributes: a, body: b } = fm(page && page.content)
       setAttributes(a)
       setBody(<Mark>{b}</Mark>)
     } catch (error) {
       const { ErrorBlock } = require('../../components/error')
-      setBody(<ErrorBlock error={error} details={{page, content: page && page.content}} />)
+      setBody(<ErrorBlock error={error} details={{ page, content: page && page.content }} />)
     }
   }, [page && page.content])
 

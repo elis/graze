@@ -2,24 +2,24 @@ export const makeQS = (types, select, pad = '', parent) => {
   const p = `${pad}  `
   const self = types[select]
   let str = ''
-  
+
   for (const [name, type] of Object.entries(self.fields)) {
     switch (type.kind) {
       case 'SCALAR':
       case 'ENUM':
         str += `${p}${name} `
-        break;
+        break
       case 'OBJECT':
       case 'LIST':
         if (type.ofType === parent) {
-          break;
+          break
         }
         str += `${p}${name} `
         str += '{\n'
         str += makeQS(types, type.ofType, p, parent || select)
         str += `${p}}`
-        break;
-       default:
+        break
+      default:
         str += `${p}# Unknown ${name}`
     }
     str += '\n'
@@ -31,7 +31,7 @@ export const makeQS = (types, select, pad = '', parent) => {
 export const parseTypes = types => {
   const tps = {}
 
-  for (const {name, fields} of types) {
+  for (const { name, fields } of types) {
     // console.log(`🐝`, `=${name}- $ `, {fields})
     const tp = {
       name
@@ -49,21 +49,18 @@ export const parseTypes = types => {
             ofType
           }
         }
-      }
-      else if (field.type.kind === 'SCALAR') {
+      } else if (field.type.kind === 'SCALAR') {
         flds[field.name] = {
           kind: field.type.kind,
           ofType: field.type.name
         }
-      }
-      else if (field.type.kind === 'OBJECT') {
+      } else if (field.type.kind === 'OBJECT') {
         flds[field.name] = field.type.name
         flds[field.name] = {
           kind: field.type.kind,
           ofType: field.type.name
         }
-      }
-      else if (field.type.kind === 'NON_NULL') {
+      } else if (field.type.kind === 'NON_NULL') {
         flds[field.name] = field.type.name
         flds[field.name] = {
           required: true,
@@ -73,7 +70,7 @@ export const parseTypes = types => {
       }
     }
 
-    tps[name] = {...tp, fields: flds}
+    tps[name] = { ...tp, fields: flds }
   }
 
   const doPass = entries => {
@@ -83,12 +80,12 @@ export const parseTypes = types => {
           if (field.kind === 'LIST') {
             const ofType = tps[field.ofType]
             const ofOrigin = tps[name].fields[fieldName]
-            tps[name].fields[fieldName] = {...ofOrigin, ...ofType}
+            tps[name].fields[fieldName] = { ...ofOrigin, ...ofType }
           }
           if (['OBJECT'].includes(field.kind)) {
             const ofType = tps[field.ofType]
             const ofOrigin = tps[name].fields[fieldName]
-            tps[name].fields[fieldName] = {...ofOrigin, ...ofType}
+            tps[name].fields[fieldName] = { ...ofOrigin, ...ofType }
           }
         }
       }
@@ -148,9 +145,9 @@ export const modelIssues = (parsedTypes, model, options) => {
 }
 
 export const schemaIssues = parsedTypes => Object.entries(requiredSchema)
-  .map(([model, options], index) => ({model, index, issues: modelIssues(parsedTypes, model, options)}))
-  .filter(({issues}) => issues)
-  .map(({issues, model}) => ({model, issues}))
+  .map(([model, options], index) => ({ model, index, issues: modelIssues(parsedTypes, model, options) }))
+  .filter(({ issues }) => issues)
+  .map(({ issues, model }) => ({ model, issues }))
 
 export const requiredSchema = {
   Site: {

@@ -26,23 +26,23 @@ export const onDemand = (page, path, preload, payload) => {
         throw new Error('Module was empty - Module build failed?')
       }
 
-      return {Loaded: module.default}
+      return { Loaded: module.default }
     } catch (error) {
       if (error && error.code === 'MODULE_NOT_FOUND') {
         console.error('Module not found:', error)
-        return {Error: props => <ErrorMsg error={{
+        return { Error: props => <ErrorMsg error={{
           ...error,
           message: `Module "src/pages/${page}" not found`
-        }} details={{page, path, isSSR}} />}
+        }} details={{ page, path, isSSR }} /> }
       }
-      return {Error: props => <ErrorMsg error={error} details={{page, path, isSSR}} />}
+      return { Error: props => <ErrorMsg error={error} details={{ page, path, isSSR }} /> }
     }
   }
 
   if (isSSR || path === window.location.pathname || preload || (cache[page] && cache[page].Error)) {
     cache[page] = getComp()
   }
-  
+
   return props => {
     const [Comp, setComp] = useState(cache[page])
     useEffect(() => {
@@ -62,7 +62,7 @@ export default onDemand
 
 export const preload = page => onDemand(page, '', true)
 
-export const OnDemandComponent = ({component, exp, ...props}) => {
+export const OnDemandComponent = ({ component, exp, ...props }) => {
   const Component = onDemandComponent(component, props, exp)
   return <Component />
 }
@@ -76,6 +76,6 @@ export const onDemandComponent = (component, payload, exp) => {
     return props => <Component {...props} {...payload} />
   } catch (error) {
     const { ErrorBlock } = require('../components/error')
-    return props => <ErrorBlock error={error} details={{component, payload}} />
+    return props => <ErrorBlock error={error} details={{ component, payload }} />
   }
 }

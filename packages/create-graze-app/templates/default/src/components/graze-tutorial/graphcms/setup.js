@@ -28,7 +28,7 @@ export const Welcome = props => {
           <Link to={`${url}/step-1`} className='f6 link br2 ph3 pv2 mb2 dib white bg-blue shadow grow pointer'>Step 1: Create 'Site' Model</Link>
         </p>
       </div>
-      
+
     </React.Fragment>
   )
 }
@@ -39,7 +39,7 @@ export const Step = step => props => {
 
   const [messages, setMessages] = useState([])
   const [log, setLog] = useState([])
-  const addMessage = (message, payload) => setMessages(msgs => ([{message, payload, time: Date.now()}, ...msgs]))
+  const addMessage = (message, payload) => setMessages(msgs => ([{ message, payload, time: Date.now() }, ...msgs]))
 
   const check = () => {
     const { refetch } = props.data || {}
@@ -51,23 +51,22 @@ export const Step = step => props => {
       res.then(r => {
         addMessage('Received scheme, checking types...')
         const { types } = r.data['__schema'] || {}
-        
+
         if (step === 1) {
           const hasSite = types && types.length && types.find(({ name }) => name === 'Site')
           addMessage(`Site type...${!hasSite ? '⛔️ Not' : '✅'} Found`)
           if (hasSite) {
             addMessage('Redirecting to next step...', <Redirect push to='/__tutorial/graphcms/step-2' />)
           }
-        }
-        else if (step === 2) {
+        } else if (step === 2) {
           const { parseTypes, schemaIssues } = require('../../../site/schema')
           addMessage(`Parsing schema...`)
           const parsedTypes = parseTypes(types)
           const issues = schemaIssues(parsedTypes)
-          const siteIssues = issues && (issues.find(({model}) => model === 'Site') || {}).issues
+          const siteIssues = issues && (issues.find(({ model }) => model === 'Site') || {}).issues
 
           if (siteIssues) {
-            for (const {fieldName, issue, ...data} of siteIssues) {
+            for (const { fieldName, issue, ...data } of siteIssues) {
               if (issue === 'Missing field') {
                 addMessage(`⛔️ Missing field: ${fieldName}`)
               } else if (issue === 'Bad type') {
@@ -81,17 +80,16 @@ export const Step = step => props => {
             addMessage(`✅ All checks have passed.`)
             addMessage('Redirecting to next step...', <Redirect push to='/__tutorial/graphcms/step-3' />)
           }
-        }
-        else if (step === 3) {
+        } else if (step === 3) {
           const { parseTypes, schemaIssues } = require('../../../site/schema')
           addMessage(`Parsing schema...`)
           const parsedTypes = parseTypes(types)
           const issues = schemaIssues(parsedTypes)
-          const pageIssues = issues && (issues.find(({model}) => model === 'Page') || {}).issues
+          const pageIssues = issues && (issues.find(({ model }) => model === 'Page') || {}).issues
           console.log(`⛔️ issues`, issues)
 
           if (pageIssues) {
-            for (const {fieldName, issue, ...data} of pageIssues) {
+            for (const { fieldName, issue, ...data } of pageIssues) {
               if (issue === 'Missing field') {
                 addMessage(`⛔️ Missing field: ${fieldName}`)
               } else if (issue === 'Bad type') {
@@ -101,22 +99,20 @@ export const Step = step => props => {
               }
             }
             addMessage(`⛔️ Check failed — Could not proceed.`, <a href='#log-discrepencies' onClick={e =>
-                console.group('Graze') ||
-                console.table(pageIssues) ||
-                console.log('Parsed types:', parsedTypes) ||
-                console.log('Parsed Page:', parsedTypes['Page']) ||
-                console.groupEnd() ||
-                e.preventDefault()}>Log discrepencies to console</a>)
+              console.group('Graze') ||
+              console.table(pageIssues) ||
+              console.log('Parsed types:', parsedTypes) ||
+              console.log('Parsed Page:', parsedTypes['Page']) ||
+              console.groupEnd() ||
+              e.preventDefault()}>Log discrepencies to console</a>)
           } else {
             addMessage(`✅ All checks have passed.`)
             addMessage('Redirecting to next step...', <Redirect push to='/__tutorial/graphcms/page-attributes' />)
           }
         }
       })
-    }
-    
-    // As plain site pages
-    else {
+    } else {
+      // As plain site pages
       if (step === 1) {
         addMessage('Redirecting to next step...',
           <Redirect push to='/__tutorial/graphcms/step-2' />)
@@ -134,7 +130,7 @@ export const Step = step => props => {
   useEffect(() => {
     const logs = messages
       // Calculate diff
-      .map((msg, i) => (i < messages.length - 1 ? {...msg, diff: msg.time - (messages[i+1]).time} : msg))
+      .map((msg, i) => (i < messages.length - 1 ? { ...msg, diff: msg.time - (messages[i + 1]).time } : msg))
 
       // Render log item
       .map((msg, i) => (
@@ -156,10 +152,10 @@ export const Step = step => props => {
 
   return (
     <ArticleFullBleed
-        art={content[step - 1].art}
-        title={content[step - 1].title}
-        subtitle={content[step - 1].subtitle}
-      >
+      art={content[step - 1].art}
+      title={content[step - 1].title}
+      subtitle={content[step - 1].subtitle}
+    >
       <Body />
       <div className='avenir measure mt2 tr'>
         <button onClick={() => check()} className='f6 link br2 ph3 pv2 mb2 dib white bg-blue shadow grow pointer'>Next</button>
@@ -371,7 +367,7 @@ const content = [
           Site and Page models so that our site can have other pages and
           wont be limited only to the Index page.
         </p>
-        
+
         <p className='times lh-copy measure f4 mt0'>
           Drag another "Reference" to your Page model and follow
           the details below.
@@ -379,7 +375,7 @@ const content = [
         <p className='times lh-copy measure f4 mt0'>
           <img src={require('./images/reference.png')} alt='Page Model - Index field' />
         </p>
-        
+
         <p className='times lh-copy measure f4 mt0'>
           In the left pane set "Display Name" to <code>Graze Sites</code>, and "App ID" <code>grazeSites</code>,
           in the center select <code>Many to many relation</code>. In the right side select

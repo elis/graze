@@ -1,20 +1,18 @@
-'use strict';
+const execa = require('execa')
 
-const execa = require('execa');
+let cmd
 
-let cmd;
-
-module.exports = function getInstallCmd() {
+module.exports = function getInstallCmd () {
   if (cmd) {
-    return cmd;
+    return cmd
   }
 
   try {
-    execa.sync('yarnpkg', ['--version']);
-    cmd = 'yarn';
+    execa.sync('yarnpkg', ['--version'])
+    cmd = 'yarn'
   } catch (e) {
-    cmd = 'npm';
+    cmd = 'npm'
   }
 
-  return cmd;
-};
+  return cmd
+}

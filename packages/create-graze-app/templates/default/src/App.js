@@ -13,7 +13,7 @@ const Styles = createGlobalStyle`
   }
 `
 
-const App = ({client, ...props}) => (
+const App = ({ client }) => (
   <ApolloProvider client={client}>
     <React.Fragment>
       <ScrollToTopControlller />
@@ -21,23 +21,23 @@ const App = ({client, ...props}) => (
       <Site />
     </React.Fragment>
   </ApolloProvider>
-);
+)
 
 export default App
-export const ScrollToTopControlller = withRouter(({location, history, ...props}) => {
-  const  { pathname, search } = location
+export const ScrollToTopControlller = withRouter(({ location, history }) => {
+  const { pathname, search } = location
   const { action } = history
   const isSSR = typeof window === 'undefined'
   useEffect(() => {
     if (!isSSR && (
       action === 'PUSH' ||
       action === 'REPLACE'
-      )) {
+    )) {
       try {
         window.scroll({
           top: 0,
           left: 0,
-          behavior: 'smooth',
+          behavior: 'smooth'
         })
       } catch (error) {
         // just a fallback for older browsers

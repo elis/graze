@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default ({className, bgColor, children, pitch, art, actions, ...props}) => <header className={`sans-serif ${className}`} {...props}>
+export default ({ className, bgColor, children, pitch, art, actions, ...props }) => <header className={`sans-serif ${className}`} {...props}>
   <div className={`cover bg-left bg-center-l`}>
     <div className={`bg-${bgColor || 'black-80'} pb5 pb5-m pb6-l v-mid cnt`}>
       <div className='mw9 center ph4-ns'>
@@ -39,17 +39,17 @@ export default ({className, bgColor, children, pitch, art, actions, ...props}) =
 
 export const transformModel = inputs => {
   const fm = require('front-matter')
-  const {attributes} = inputs && inputs.content && fm(inputs.content)
+  const { attributes } = inputs && inputs.content && fm(inputs.content)
 
   return (inputs && {
     pitch: {
       title: inputs.title,
-      subtitle: inputs.subtitle,
+      subtitle: inputs.subtitle
     },
     actions: attributes && attributes.actions && attributes.actions
-      .map(({label, ...rest}) => ({children: label, ...rest})),
+      .map(({ label, ...rest }) => ({ children: label, ...rest })),
     art: inputs.art && inputs.art.url // && `https://media.graphcms.com/${inputs.art.handle}`
-    // actions: 
+    // actions:
   })
 }
 const CoverPitch = styled.div`
@@ -85,8 +85,7 @@ const CoverSplit = styled.div`
   }
 `
 
-
-const Action = ({primary, spacer, ...props}) => {
+const Action = ({ primary, spacer, ...props }) => {
   if (spacer) {
     return <span className='dib v-mid ph3 white-70 mb3' />
   }
