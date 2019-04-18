@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-export default ({title, children, className, ...props}) => {
+export default ({ title, children, className, ...props }) => {
   return (
     <ArticlesList className={`mw7 center avenir ${className}`}>
       <h2 className='evenir fw1 ph3 ph0-l'>{title}</h2>
@@ -15,7 +15,7 @@ export const transformModel = inputs => (
   {
     title: inputs.title,
     children: inputs.articles.map(transformArticleModel)
-      .map(({slug, ...props}) => ({
+      .map(({ slug, ...props }) => ({
         ...props,
         slug: inputs.articleSlug ? `${inputs.articleSlug}/${slug}` : slug
       }))
@@ -25,11 +25,11 @@ export const transformModel = inputs => (
   }
 )
 
-export const Article = ({slug, title, subtitle, art, children, ...props}) => (
+export const Article = ({ slug, title, subtitle, art, children, ...props }) => (
   <ArticleItem className='bb b--black-10' key={`article ${slug}`}>
     <Link to={slug} className='db pv4 ph3 ph0-l no-underline black dim' href='#0'>
       <div className='flex flex-column flex-row-ns'>
-        <div className='mb4 mb0-ns w-100 w-40-ns art' style={{backgroundImage: `url(${art})`}} />
+        <div className='mb4 mb0-ns w-100 w-40-ns art' style={{ backgroundImage: `url(${art})` }} />
         <div className='pr4-ns pad' />
         <div className='w-100 w-60-ns pitch'>
           <h1 className='f3 fw1 evenir mt0 lh-title'>{title}</h1>
@@ -49,7 +49,7 @@ export const transformArticleModel = inputs => (
     subtitle: inputs.description,
     art: inputs.previewArt && inputs.previewArt.url,
     slug: inputs.slug
-})
+  })
 
 const ArticleItem = styled.article`
   .art {

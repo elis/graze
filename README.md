@@ -1,5 +1,7 @@
 Graze is a modern content management and deployment solution for snappy sites and web apps.
 
+![Graze](https://media.graphcms.com/KkXwoVaCSpq4zznnCHt9)
+
 It's based on [Razzle](https://github.com/jaredpalmer/razzle/) with a few modifications to easily deploy to heroku and plug into GraphCMS.
 
 ## Install
@@ -12,21 +14,19 @@ Install graze:
  $ npm start
 ```
 
+Learn more about setup and installation in our tutorial: [Graze Turorial](https://graze.site/__tutorial)
+
 ## Deploy
 
 Currently Graze supports deployment to Heroku.
 
-To deploy to Heroku first set the GraphCMS API variable:
+Push directly to heroku via git `git push heroku master` or use the shorthand command:
 
 ```
- $ git push heroku master
+ $ npm deploy
 ```
 
 Your app will be deployed to Heroku - follow the CLI output.
-
-## EXPERIMENTAL
-
-Be advised that this software is at a very early stage and is considered experimental - use on production with care.
 
 ## Motivation
 

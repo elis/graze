@@ -5,10 +5,10 @@ export const PagesAndMedia = props => {
   const ArticleFullBleed = require('../../../articles/full-bleed').default
   return (
     <ArticleFullBleed
-        art={require('../images/upload-media.png')}
-        title={'Adding Pages and Media'}
-        subtitle={'Graze GraphCMS Advanced Tutorial'}
-      >
+      art={require('../images/upload-media.png')}
+      title={'Adding Pages and Media'}
+      subtitle={'Graze GraphCMS Advanced Tutorial'}
+    >
       <p className='times lh-copy measure f4 mt0'>
         Let's add pages to our Graze site - navigate to the "Content"
         section in GraphCMS, go to Pages and click on "<span role='img' aria-label='Plus'>➕</span> Create Page".
@@ -83,7 +83,7 @@ Welcome to features! Start exploring by changing the components to your liking!
       </p>
       <p className='times lh-copy measure f4 mt0'>
         You might notice that I've slighty modified the URLs and
-        all the images have <code>resize=w:294</code> directive — 
+        all the images have <code>resize=w:294</code> directive —
         this tells the GraphCMS api to resize the images according
         the defined width. Go <a href='https://docs.graphcms.com/developers/assets/transformations/resize-fit-and-align'>check
         out the API</a> to learn more about their transformation directives.

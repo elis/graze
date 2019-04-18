@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route, } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 
 export default props => {
   const Page = require('../../page').default
@@ -24,7 +24,7 @@ export default props => {
                 return <Comp {...routeProps} data={props.data} />
               } catch (error) {
                 const { ErrorBlock } = require('../../error')
-                return <ErrorBlock error={error} details={{section, url}} />
+                return <ErrorBlock error={error} details={{ section, url }} />
               }
             }}
           </Route>
@@ -33,7 +33,3 @@ export default props => {
     </Page>
   )
 }
-
-
-
-

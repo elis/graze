@@ -22,13 +22,13 @@ const ErrorEl = styled.div`
   }
 `
 
-const ErrorLink = ({error, ...props}) => {
+const ErrorLink = ({ error, ...props }) => {
   const slug = error && (error.code || error.message)
   const uri = escape(slug).substr(0, 96)
   return <a href={`http://graze.site/errors-db/${uri}`}>{slug}</a>
 }
 
-export const ErrorBlock = ({error, details, ...props}) => (
+export const ErrorBlock = ({ error, details, ...props }) => (
   <React.Fragment>
     <h1>Error</h1>
     <p><span>Seach Error DB: <ErrorLink error={error} /></span></p>

@@ -2,33 +2,33 @@ import React from 'react'
 import styled from 'styled-components'
 import Mark from 'react-markdown'
 
-const NewRepo = ({className, features, ...props}) => {
+const NewRepo = ({ className, features, ...props }) => {
   const octohex = require('./octohex.svg')
   return (
-  <section className={`sans-serif ${className || ''}`}>
-    <div className={`cover bg-left bg-center-l`}>
-      <BgContainer className={`bg-${'washed-blue'} pb5 pb5-m pb6-l v-mid cnt`}>
-        <div className='mw9 center ph2-ns'>
-          <div className='art flex'>
-            <img src={octohex} className='dib center w5' alt='HexOctoCat' />
+    <section className={`sans-serif ${className || ''}`}>
+      <div className={`cover bg-left bg-center-l`}>
+        <BgContainer className={`bg-${'washed-blue'} pb5 pb5-m pb6-l v-mid cnt`}>
+          <div className='mw9 center ph2-ns'>
+            <div className='art flex'>
+              <img src={octohex} className='dib center w5' alt='HexOctoCat' />
+            </div>
+            <div className='description flex flex-wrap w-100'>
+              {features && features.length && features
+                .map(feature => ({ ...feature, ...require('front-matter')(feature.description) }))
+                .map(feature => ({ ...feature, attributes: require('../../../../site').compileAttributes(feature.attributes, props) }))
+                .map((f, i) => (
+                  <Feature key={`github feature ${i}`} index={i} feature={f} />
+                ))
+              }
+            </div>
           </div>
-          <div className='description flex flex-wrap w-100'>
-            {features && features.length && features
-              .map(feature => ({...feature, ...require('front-matter')(feature.description)}))
-              .map(feature => ({...feature, attributes: require('../../../../site').compileAttributes(feature.attributes, props)}))
-              .map((f, i) => (
-                <Feature key={`github feature ${i}`} index={i} feature={f} />
-              ))
-            }
-          </div>
-        </div>
-      </BgContainer>
-    </div>
-  </section>
+        </BgContainer>
+      </div>
+    </section>
   )
 }
 
-export const Feature = ({index, feature, className, ...props}) => (
+export const Feature = ({ index, feature, className, ...props }) => (
   <FeatureEl className={`w-third-ns avenir ph2-l ph2 ${!index ? 'w-100-m tl tc-m' : 'w-50-m ph2'} ${className || ''}`}>
     <h3>{feature.title}</h3>
     <div className='desc'><Mark escapeHtml={false}>{feature.body}</Mark></div>
@@ -38,7 +38,8 @@ export const Feature = ({index, feature, className, ...props}) => (
           .map(([i, repo]) => Object.entries(repo))
           .map(([[repo, attrs]]) => ([repo, attrs]))
           .map(([repo, attrs], index) => (
-            <GitHubRepo key={`repo ${index}`} repo={repo} {...attrs} className='w-100 mr2-m ml2-m mb2 mt2 ph2-m' />
+            console.log(`::`, 'Repo:', { repo, attrs }) ||
+            <GitHubRepo key={`repo ${index}`} repo={repo} {...attrs} className='w-100 mr2-m ml2-m mb2 mt2' />
           ))
         }
       </div>
@@ -118,14 +119,15 @@ const BgContainer = styled.div`
   }
 `
 
-const GitHubRepo = ({repo, description, art, className, npm, ...props}) => (
+const GitHubRepo = ({ repo, description, github, npm, art, className, ...props }) => (
+  console.log(`==`, 'Repo:', { repo, description, github, art, className, npm }) ||
   <GitHubBookmark className={`b-silver bg-white flex mr2 ml2 center ${className}`}>
     <div className='pitch w-50 tl ph2 pv3'>
-      <h4 className='f6 pb2'><a href={`http://github.com/${repo}`}>{repo}</a></h4>
-      <p className='f6 lh-copy pb2'>{description}</p>
+      <h4 className='f6 pb2'><a href={`http://github.com/${github || repo}`}>{repo}</a></h4>
+      <p className='f6 lh-copy pb2'><Mark>{description}</Mark></p>
       <div className='github f6'>
         <img src={require('./octohex.svg')} alt='Graze GitHub HexaOctoCat' />
-        <a className='db' href={`http://github.com/${repo}`}>
+        <a className='db' href={`http://github.com/${github || repo}`}>
           {`github.com/${repo}`}
         </a>
       </div>
@@ -138,7 +140,7 @@ const GitHubRepo = ({repo, description, art, className, npm, ...props}) => (
         </div>
       )}
     </div>
-    <div className='art w-50' style={{backgroundImage: `url(${art})`}}>
+    <div className='art w-50' style={{ backgroundImage: `url(${art})` }}>
       {/* <img src={art} className={repo} className='dib' /> */}
     </div>
   </GitHubBookmark>
@@ -150,6 +152,9 @@ const GitHubBookmark = styled.section`
   a {
     color: #357EDD;
     text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
   .art {
     overflow: hidden;
@@ -173,6 +178,8 @@ const GitHubBookmark = styled.section`
     .github, .npm {
       display: flex;
       align-items: center;
+      transition: all 120ms ease-out;
+
       a {
         white-space: nowrap;
         /* height: 1rem; */
@@ -181,7 +188,13 @@ const GitHubBookmark = styled.section`
         /* word-wrap:  */
       }
       > img {
+        transition: all 120ms ease-out;
         width: 2em;
+      }
+      &:hover {
+        > img {
+          transform: scale(1.1);
+        }
       }
     }
     .npm {

@@ -1,14 +1,14 @@
 {
-  "name": "graze-site",
-  "version": "1.1.0",
+  "name": "my-graze-app",
+  "version": "0.1.0",
   "license": "MIT",
   "scripts": {
     "start": "razzle start",
     "build": "razzle build",
+    "deploy": "git push heroku master",
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js"
   },
-  "repository": "elis/graze",
   "dependencies": {
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.5.1",
@@ -16,10 +16,10 @@
     "axios": "^0.18.0",
     "dayjs": "^1.8.12",
     "express": "^4.16.4",
-    "front-matter": "^3.0.1",
+    "front-matter": "^3.0.2",
     "graphql": "^14.2.1",
     "graphql-tag": "^2.10.1",
-    "razzle": "^2.4.1",
+    "razzle": "^3.0.0",
     "razzle-heroku": "^3.0.0",
     "react": "^16.8.6",
     "react-apollo": "^2.5.4",
