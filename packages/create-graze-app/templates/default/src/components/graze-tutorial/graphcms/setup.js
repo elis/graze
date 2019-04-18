@@ -183,7 +183,7 @@ export const Step = step => props => {
     const logs = messages
       // Calculate diff
       .map((msg, i) => (i < messages.length - 1 ? { ...msg, diff: msg.time - (messages[i + 1]).time } : msg))
-      
+
       // Setup stats
       .map(el => {
         const logres = ReactGA.event({

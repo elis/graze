@@ -39,7 +39,7 @@ export default props => {
         preview={site.previewImage}
       />
       <StatsReporting trackingId={site.googleAnalytics} />
-      
+
       <SiteContext.Provider value={site}>
         <Switch>
           <Route path='/' exact component={onDemand('index', '/', false, { page: site && site.index, site, error })} />
@@ -61,7 +61,7 @@ export const StatsReporting = withRouter(({ location, setup, trackingId }) => {
   const { pathname, search } = location
   let ReactGA
   if (!trackingId) {
-    ReactGA = initGA({ 
+    ReactGA = initGA({
       trackingId: 'UA-138092593-2',
       gaOptions: { name: 'graze-setup' }
     })

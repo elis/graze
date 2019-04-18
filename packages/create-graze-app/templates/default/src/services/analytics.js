@@ -1,7 +1,5 @@
 import ReactGA from 'react-ga'
 
-const cache = {}
-
 export const get = () => {
   return ReactGA
 }
