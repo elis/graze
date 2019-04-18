@@ -2,7 +2,7 @@ import React, { createContext, useEffect } from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import onDemand, { preload } from './on-demand'
 import { Helmet } from 'react-helmet'
-import { get as getGA } from '../services/analytics'
+import { init as initGA } from '../services/analytics'
 
 export const SiteContext = createContext({})
 const isSSR = typeof window === 'undefined'
@@ -38,9 +38,8 @@ export default props => {
         favicon={site.favicon}
         preview={site.previewImage}
       />
-      {site.googleAnalytics && (
-        <StatsReporting trackingId={site.googleAnalytics} />
-      )}
+      <StatsReporting trackingId={site.googleAnalytics} />
+      
       <SiteContext.Provider value={site}>
         <Switch>
           <Route path='/' exact component={onDemand('index', '/', false, { page: site && site.index, site, error })} />
@@ -58,10 +57,17 @@ export default props => {
   )
 }
 
-export const StatsReporting = withRouter(({ location, trackingId }) => {
+export const StatsReporting = withRouter(({ location, setup, trackingId }) => {
   const { pathname, search } = location
-  const ReactGA = getGA({ trackingId })
-
+  let ReactGA
+  if (!trackingId) {
+    ReactGA = initGA({ 
+      trackingId: 'UA-138092593-2',
+      gaOptions: { name: 'graze-setup' }
+    })
+  } else {
+    ReactGA = initGA({ trackingId })
+  }
   useEffect(() => {
     ReactGA.pageview(`${pathname}${search}`)
   }, [pathname, search])
@@ -74,7 +80,6 @@ const CM = 'https://media.graphcms.com/'
 const MetaStyles = ({ title, description, favicon, preview, ...props }) => {
   const favi = favicon && favicon.handle
   const previ = preview && preview.url
-
   return (
     <React.Fragment>
       {props.children}

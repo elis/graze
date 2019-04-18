@@ -29,7 +29,14 @@ const NewRepo = ({ className, features, ...props }) => {
 }
 
 export const Feature = ({ index, feature, className, ...props }) => (
-  <FeatureEl className={`w-third-ns avenir ph2-l ph2 ${!index ? 'w-100-m tl tc-m' : 'w-50-m ph2'} ${className || ''}`}>
+  <FeatureEl onClick={() => {
+    const { get } = require('../../../../services/analytics')
+    const ga = get()
+    ga.event({
+      category: 'Click',
+      action: `Feature — ${feature.title}`
+    })
+  }} className={`w-third-ns avenir ph2-l ph2 ${!index ? 'w-100-m tl tc-m' : 'w-50-m ph2'} ${className || ''}`}>
     <h3>{feature.title}</h3>
     <div className='desc'><Mark escapeHtml={false}>{feature.body}</Mark></div>
     {!index && feature.attributes && feature.attributes.repos && (
@@ -38,8 +45,14 @@ export const Feature = ({ index, feature, className, ...props }) => (
           .map(([i, repo]) => Object.entries(repo))
           .map(([[repo, attrs]]) => ([repo, attrs]))
           .map(([repo, attrs], index) => (
-            console.log(`::`, 'Repo:', { repo, attrs }) ||
-            <GitHubRepo key={`repo ${index}`} repo={repo} {...attrs} className='w-100 mr2-m ml2-m mb2 mt2' />
+            <GitHubRepo onClick={() => {
+              const { get } = require('../../../../services/analytics')
+              const ga = get()
+              ga.event({
+                category: 'Click',
+                action: `Repo — ${repo.replace('/', '.')}`
+              })
+            }} key={`repo ${index}`} repo={repo} {...attrs} className='w-100 mr2-m ml2-m mb2 mt2' />
           ))
         }
       </div>
@@ -120,15 +133,14 @@ const BgContainer = styled.div`
 `
 
 const GitHubRepo = ({ repo, description, github, npm, art, className, ...props }) => (
-  console.log(`==`, 'Repo:', { repo, description, github, art, className, npm }) ||
   <GitHubBookmark className={`b-silver bg-white flex mr2 ml2 center ${className}`}>
     <div className='pitch w-50 tl ph2 pv3'>
       <h4 className='f6 pb2'><a href={`http://github.com/${github || repo}`}>{repo}</a></h4>
-      <p className='f6 lh-copy pb2'><Mark>{description}</Mark></p>
+      <p className='f6 lh-copy pb2'><Mark source={description} /></p>
       <div className='github f6'>
         <img src={require('./octohex.svg')} alt='Graze GitHub HexaOctoCat' />
         <a className='db' href={`http://github.com/${github || repo}`}>
-          {`github.com/${repo}`}
+          {`github.com/${github || repo}`}
         </a>
       </div>
       {npm && (
@@ -185,6 +197,7 @@ const GitHubBookmark = styled.section`
         /* height: 1rem; */
         overflow: hidden;
         text-overflow: ellipsis;
+        max-width: 18rem;
         /* word-wrap:  */
       }
       > img {

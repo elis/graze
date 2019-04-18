@@ -3,14 +3,19 @@ import Mark from 'react-markdown'
 import styled from 'styled-components'
 
 export default props => (
-  <InstallEl className='pv6'>
+  <InstallEl onClick={() => {
+    require('../../../../services/analytics').get().event({
+      category: 'Click',
+      action: `Install`
+    })
+  }} className='pv6'>
     <div className='bg-dark-blue'>
       <div className='flex mw8 ph3 center flex-wrap'>
-        <div className='pitch w-100 w-40-m w-40-l avenir ph4-ns'>
+        <div className='pitch w-40-ns avenir ph4-ns'>
           <h1>{props.title}</h1>
           <Mark>{props.subtitle}</Mark>
         </div>
-        <div className='art w-100 w-60-m w-60-l'>
+        <div className='art w-60-ns'>
           <Terminal>
             <BashRow>npx create-graze-app <em>my-app</em> my-heroku-app graphcmsapi</BashRow>
             <BashOutput output={`
@@ -27,7 +32,6 @@ Creating *my-app*...
     </div>
   </InstallEl>
 )
-
 
 const TerminalEl = styled.div`
   color: #F6FFFE;
@@ -128,5 +132,5 @@ const BashOutput = props => (
 
 export const transformModel = inputs => (
   {
-  ...inputs
-})
+    ...inputs
+  })

@@ -36,10 +36,13 @@ export const Welcome = props => {
 export const Step = step => props => {
   const dayjs = require('dayjs')
   const ArticleFullBleed = require('../../articles/full-bleed').default
+  const { get: getGA } = require('../../../services/analytics')
 
   const [messages, setMessages] = useState([])
   const [log, setLog] = useState([])
   const addMessage = (message, payload) => setMessages(msgs => ([{ message, payload, time: Date.now() }, ...msgs]))
+
+  const ReactGA = getGA()
 
   const check = () => {
     const { refetch } = props.data || {}
@@ -56,8 +59,16 @@ export const Step = step => props => {
           const hasSite = types && types.length && types.find(({ name }) => name === 'Site')
           addMessage(`Site type...${!hasSite ? '⛔️ Not' : '✅'} Found`)
           if (hasSite) {
+            ReactGA.event({
+              category: 'Setup',
+              action: 'Complete Step 1'
+            })
             addMessage('Redirecting to next step...', <Redirect push to='/__tutorial/graphcms/step-2' />)
           }
+          ReactGA.event({
+            category: 'Setup',
+            action: 'Failed Step 1'
+          })
         } else if (step === 2) {
           const { parseTypes, schemaIssues } = require('../../../site/schema')
           addMessage(`Parsing schema...`)
@@ -74,11 +85,24 @@ export const Step = step => props => {
               } else {
                 addMessage(`⛔ ${issue}: ${fieldName}`)
               }
+              ReactGA.event({
+                category: 'Setup',
+                action: 'Failed Step 2 - ' + issue,
+                label: `Field Name: ${fieldName}`
+              })
             }
             addMessage(`⛔️ Check failed — Could not proceed.`, <a href='#log-issues' onClick={e => console.table(siteIssues) || e.preventDefault()}>Log discrepencies to console</a>)
+            ReactGA.event({
+              category: 'Setup',
+              action: 'Failed Step 2'
+            })
           } else {
             addMessage(`✅ All checks have passed.`)
             addMessage('Redirecting to next step...', <Redirect push to='/__tutorial/graphcms/step-3' />)
+            ReactGA.event({
+              category: 'Setup',
+              action: 'Complete Step 2'
+            })
           }
         } else if (step === 3) {
           const { parseTypes, schemaIssues } = require('../../../site/schema')
@@ -97,6 +121,11 @@ export const Step = step => props => {
               } else {
                 addMessage(`⛔ ${issue}: ${fieldName}`)
               }
+              ReactGA.event({
+                category: 'Setup',
+                action: 'Failed Step 3 - ' + issue,
+                label: `Field Name: ${fieldName}`
+              })
             }
             addMessage(`⛔️ Check failed — Could not proceed.`, <a href='#log-discrepencies' onClick={e =>
               console.group('Graze') ||
@@ -105,9 +134,21 @@ export const Step = step => props => {
               console.log('Parsed Page:', parsedTypes['Page']) ||
               console.groupEnd() ||
               e.preventDefault()}>Log discrepencies to console</a>)
+            ReactGA.event({
+              category: 'Setup',
+              action: 'Failed Step 3'
+            })
           } else {
             addMessage(`✅ All checks have passed.`)
             addMessage('Redirecting to next step...', <Redirect push to='/__tutorial/graphcms/page-attributes' />)
+            ReactGA.event({
+              category: 'Setup',
+              action: 'Complete Step 3'
+            })
+            ReactGA.event({
+              category: 'Setup',
+              action: 'Complete'
+            })
           }
         }
       })
@@ -116,21 +157,43 @@ export const Step = step => props => {
       if (step === 1) {
         addMessage('Redirecting to next step...',
           <Redirect push to='/__tutorial/graphcms/step-2' />)
+        ReactGA.event({
+          category: 'Tutorial',
+          action: 'Continue to Step 2'
+        })
       } else if (step === 2) {
         addMessage('Redirecting to page-attributes...',
           <Redirect push to='/__tutorial/graphcms/step-3' />)
+        ReactGA.event({
+          category: 'Tutorial',
+          action: 'Continue to Step 3'
+        })
       } else if (step === 3) {
         addMessage('Redirecting to tutorial index...',
           <Redirect push to='/__tutorial/graphcms/page-attributes' />)
+        ReactGA.event({
+          category: 'Tutorial',
+          action: 'Continue to Step page-attributes'
+        })
       }
     }
   }
-
   // Local console
   useEffect(() => {
     const logs = messages
       // Calculate diff
       .map((msg, i) => (i < messages.length - 1 ? { ...msg, diff: msg.time - (messages[i + 1]).time } : msg))
+      
+      // Setup stats
+      .map(el => {
+        const logres = ReactGA.event({
+          category: 'Setup',
+          action: 'Log Item',
+          value: el.message
+        })
+        console.log('should log...', logres)
+        return el
+      })
 
       // Render log item
       .map((msg, i) => (

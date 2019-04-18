@@ -17,8 +17,12 @@ const SiteBuild = props => {
   }
 
   if (issues && issues.length) {
+    const { StatsReporting } = require('./routing')
     const { default: Tutorial } = require('../components/graze-tutorial')
-    return <Tutorial types={types} issues={issues} {...props} />
+    return <React.Fragment>
+      <StatsReporting />
+      <Tutorial types={types} issues={issues} {...props} />
+    </React.Fragment>
   }
 
   const pageQuery = useMemo(() => {
@@ -46,10 +50,8 @@ const typesSchema = gql`
     types {
       name
       kind
-      description
       fields {
         name
-        description
         type {
           name
           kind
