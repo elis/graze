@@ -64,13 +64,13 @@ server
     ${styleTags}
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <!-- Replace GA tag with your own - this one tracks graze installs -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-138092593-2"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-138092593-1"></script>
     <script>
       window.dataLayer = window.dataLayer || []
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date())
       
-      gtag('config', 'UA-138092593-2')
+      gtag('config', 'UA-138092593-1')
     </script>
   </body>
 </html>`
