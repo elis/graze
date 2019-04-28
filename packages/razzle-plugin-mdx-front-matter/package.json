@@ -1,0 +1,15 @@
+{
+  "name": "razzle-plugin-mdx-front-matter",
+  "version": "1.0.0",
+  "description": "Use mdx with Front Matter Razzle",
+  "main": "index.js",
+  "repository": "git@github.com:elis/graze.git",
+  "author": "Eli Sklar <eli.sklar@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "@mdx-js/loader": "^0.15.0-0",
+    "@mdx-js/mdx": "^0.15.0-0",
+    "gray-matter": "^4.0.2",
+    "stringify-object": "^3.3.0"
+  }
+}
