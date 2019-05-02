@@ -61,14 +61,20 @@ function installWithMessageFactory (opts, isExample = false) {
     'apollo-link-http',
     'graphql-tag',
     'graphql',
-    'styled-components',
-    'tachyons',
-    'tachyons-components',
     'dayjs',
-    'front-matter',
+    'gray-matter',
     'react-markdown',
     'react-helmet',
-    'react-ga'
+    
+    'react-ga', // graze-ga
+    'styled-components', // graze-styled-components
+    'tachyons', // graze-tachyons
+    'tachyons-components', // graze-tachyons
+    'jss', // graze-material-ui
+    'react-jss', // graze-material-ui
+    '@material-ui/core', // graze-material-ui
+    'razzle-plugin-mdx', // graze-docs
+    'razzle-plugin-mdx-front-matter' // graze-docs
   ].sort((a, b) => a.length > b.length ? 1 : -1)
 
   return function installWithMessage () {

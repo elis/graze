@@ -14,8 +14,8 @@ const NewRepo = ({ className, features, ...props }) => {
             </div>
             <div className='description flex flex-wrap w-100'>
               {features && features.length && features
-                .map(feature => ({ ...feature, ...require('front-matter')(feature.description) }))
-                .map(feature => ({ ...feature, attributes: require('../../../../site').compileAttributes(feature.attributes, props) }))
+                .map(feature => ({ ...feature, ...require('gray-matter')(feature.description) }))
+                .map(({data, content, ...feature}) => ({ ...feature, attributes: require('@graze').default.compileAttributes(data, props), body: content }))
                 .map((f, i) => (
                   <Feature key={`github feature ${i}`} index={i} feature={f} />
                 ))
@@ -28,37 +28,40 @@ const NewRepo = ({ className, features, ...props }) => {
   )
 }
 
-export const Feature = ({ index, feature, className, ...props }) => (
-  <FeatureEl onClick={() => {
-    const { get } = require('../../../../services/analytics')
-    const ga = get()
-    ga.event({
-      category: 'Click',
-      action: `Feature — ${feature.title}`
-    })
-  }} className={`w-third-ns avenir ph2-l ph2 ${!index ? 'w-100-m tl tc-m' : 'w-50-m ph2'} ${className || ''}`}>
-    <h3>{feature.title}</h3>
-    <div className='desc'><Mark escapeHtml={false}>{feature.body}</Mark></div>
-    {!index && feature.attributes && feature.attributes.repos && (
-      <div className='repos flex flex-wrap'>
-        {Object.entries(feature.attributes.repos)
-          .map(([i, repo]) => Object.entries(repo))
-          .map(([[repo, attrs]]) => ([repo, attrs]))
-          .map(([repo, attrs], index) => (
-            <GitHubRepo onClick={() => {
-              const { get } = require('../../../../services/analytics')
-              const ga = get()
-              ga.event({
-                category: 'Click',
-                action: `Repo — ${repo.replace('/', '.')}`
-              })
-            }} key={`repo ${index}`} repo={repo} {...attrs} className='w-100 mr2-m ml2-m mb2 mt2' />
-          ))
-        }
-      </div>
-    )}
-  </FeatureEl>
-)
+export const Feature = ({ index, feature, className, ...props }) => {
+  const { default: { useGA } } = require('@graze')
+  const { ReactGA: ga } = (useGA && useGA()) || {}
+
+  return (
+    <FeatureEl onClick={() => {
+      if (ga) {
+        ga.event({
+          category: 'Click',
+          action: `Feature — ${feature.title}`
+        })
+      }
+    }} className={`w-third-ns avenir ph2-l ph2 ${!index ? 'w-100-m tl tc-m' : 'w-50-m ph2'} ${className || ''}`}>
+      <h3>{feature.title}</h3>
+      <div className='desc'><Mark escapeHtml={false}>{feature.body}</Mark></div>
+      {!index && feature.attributes && feature.attributes.repos && (
+        <div className='repos flex flex-wrap'>
+          {Object.entries(feature.attributes.repos)
+            .map(([i, repo]) => Object.entries(repo))
+            .map(([[repo, attrs]]) => ([repo, attrs]))
+            .map(([repo, attrs], index) => (
+              <GitHubRepo onClick={() => {
+                ga.event({
+                  category: 'Click',
+                  action: `Repo — ${repo.replace('/', '.')}`
+                })
+              }} key={`repo ${index}`} repo={repo} {...attrs} className='w-100 mr2-m ml2-m mb2 mt2' />
+            ))
+          }
+        </div>
+      )}
+    </FeatureEl>
+  )
+}
 
 export default NewRepo
 
@@ -132,11 +135,13 @@ const BgContainer = styled.div`
   }
 `
 
+const RepoP = ({className, ...props}) => <p {...props} className={`f6 lh-copy pb2 ${className}`} />
+
 const GitHubRepo = ({ repo, description, github, npm, art, className, ...props }) => (
   <GitHubBookmark className={`b-silver bg-white flex mr2 ml2 center ${className}`}>
     <div className='pitch w-50 tl ph2 pv3'>
       <h4 className='f6 pb2'><a href={`http://github.com/${github || repo}`}>{repo}</a></h4>
-      <p className='f6 lh-copy pb2'><Mark source={description} /></p>
+      <Mark source={description} components={{p: RepoP}} />
       <div className='github f6'>
         <img src={require('./octohex.svg')} alt='Graze GitHub HexaOctoCat' />
         <a className='db' href={`http://github.com/${github || repo}`}>

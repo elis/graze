@@ -1,7 +1,17 @@
 import React from 'react'
-import { OnDemandComponent } from '../../../../site/on-demand'
+import plugins from '@graze'
+const { OnDemandComponent } = plugins
+
 
 export default props => {
+//   return (
+//     <div>
+//       Farse IO
+//     </div>
+//   )
+// }
+
+// export const defaul = props => {
   const { sections, page, site } = props
   const get = (p, o) =>
     p.reduce((xs, x) => (xs && xs[x]) ? xs[x] : null, o)
@@ -38,7 +48,7 @@ export default props => {
 
 const OnDemandComponentModel = ({ component, ...props }) => {
   try {
-    const { transformModel } = require('../../../' + component)
+    const { transformModel } = require('components/' + component)
     if (typeof transformModel === 'function') {
       const model = transformModel(props.model)
       return <OnDemandComponent component={component} {...model} />

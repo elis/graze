@@ -1,0 +1,10 @@
+{
+  "name": "graze-styled-components",
+  "version": "1.0.0",
+  "description": "Styled Components hooks for Graze",
+  "main": "index.js",
+  "repository": "https://github.com/elis/graze",
+  "author": "Eli Sklar <eli.sklar@gmail.com>",
+  "license": "ISC",
+  "private": false
+}

@@ -10,7 +10,7 @@ export default (props) => {
       <meta name="msapplication-TileColor" content="#333" />
       <meta name="theme-color" content="#333" />
     </Helmet>
-    <CoverEl {...props} art={<Art className='center dib' />} />
+    <CoverEl {...props} />
   </React.Fragment>
 }
 

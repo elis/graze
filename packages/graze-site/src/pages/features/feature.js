@@ -3,7 +3,7 @@ import React from 'react'
 export default ({feature, ...props}) => {
   const { default: Article } = require('../../components/articles/full-bleed')
   const Mark = require('react-markdown')
-  const {body} = require('front-matter')(feature.content)
+  const {body} = require('gray-matter')(feature.content || '')
 
   return (
     <div>

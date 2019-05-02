@@ -4,10 +4,14 @@ import styled from 'styled-components'
 
 export default props => (
   <InstallEl onClick={() => {
-    require('../../../../services/analytics').get().event({
-      category: 'Click',
-      action: `Install`
-    })
+    const { default: { useGA } } = require('@graze')
+    if (useGA) {
+      const ga = useGA()
+      ga.event({
+        category: 'Click',
+        action: `Install`
+      })
+    }
   }} className='pv6'>
     <div className='bg-dark-blue'>
       <div className='flex mw8 ph3 center flex-wrap'>

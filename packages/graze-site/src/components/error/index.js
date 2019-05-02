@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 export default props => <div><ErrorEl>
   <ErrorBlock {...props} />
@@ -28,9 +29,10 @@ const ErrorLink = ({ error, ...props }) => {
   return <a href={`http://graze.site/errors-db/${uri}`}>{slug}</a>
 }
 
-export const ErrorBlock = ({ error, details, ...props }) => (
-  <React.Fragment>
+export const ErrorBlock = ({ error, details, children, ...props }) => (
+  <div>
     <h1>Error</h1>
+    <p><Link to='/'>Back to Home</Link></p>
     <p><span>Seach Error DB: <ErrorLink error={error} /></span></p>
     {error && error.code && (
       <h4>Code: {error.code}</h4>
@@ -50,5 +52,6 @@ export const ErrorBlock = ({ error, details, ...props }) => (
         <pre>{error.stack}</pre>
       </React.Fragment>
     )}
-  </React.Fragment>
+    {children}
+  </div>
 )

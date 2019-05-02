@@ -1,0 +1,10 @@
+{
+  "name": "graze-material-ui",
+  "version": "1.0.0",
+  "description": "Material UI hooks for Graze",
+  "main": "index.js",
+  "repository": "https://github.com/elis/graze",
+  "author": "Eli Sklar <eli.sklar@gmail.com>",
+  "license": "ISC",
+  "private": false
+}

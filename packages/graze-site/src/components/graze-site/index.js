@@ -1,6 +1,7 @@
 import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
-import { onDemandComponent } from '../../site/on-demand';
+import plugins from '@graze'
+const { onDemandComponent } = plugins
 
 export default withRouter(props => {
   const { url } = props.match

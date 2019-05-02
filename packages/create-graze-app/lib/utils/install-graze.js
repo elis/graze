@@ -37,10 +37,27 @@ module.exports = function installGraze (opts) {
       `RAZZLE_GRAPHCMS_API=${graphCms}`
     )
       .then(function () {
+        return fs.writeFile(
+          path.resolve(projectPath, './.env.production.local'),
+          `RAZZLE_GRAPHCMS_API=${graphCms}`
+        )
+      })
+      .then(function () {
         output.info('Create HOST env variable...')
         return fs.writeFile(
           path.resolve(projectPath, './.env.local'),
-          `HOST=${os.hostname()}`
+          [
+            `HOST=${os.hostname()}`
+          ].join('\n')
+        )
+      })
+      .then(function () {
+        output.info('Create NODE_PATH env variable...')
+        return fs.writeFile(
+          path.resolve(projectPath, './.env'),
+          [
+            `NODE_PATH=src`
+          ].join('\n')
         )
       })
       .then(function () {

@@ -1,14 +1,15 @@
-import App from './App'
+import App from './app'
 import { BrowserRouter } from 'react-router-dom'
 import React from 'react'
 import { hydrate } from 'react-dom'
-import { getClient } from './services/graphcms'
 
-const client = getClient()
+import plugins from './plugins'
+
+const Wrapped = plugins.wrap(App)
 
 hydrate(
   <BrowserRouter>
-    <App client={client} />
+    <Wrapped />
   </BrowserRouter>,
   document.getElementById('root')
 )

@@ -38,16 +38,18 @@ export default ({ className, bgColor, children, pitch, art, actions, ...props })
 </header>
 
 export const transformModel = inputs => {
-  const fm = require('front-matter')
-  const { attributes } = inputs && inputs.content && fm(inputs.content)
-
+  const gm = require('gray-matter')
+  const { data: attributes } = (inputs && inputs.content && gm(inputs.content)) || {}
   return (inputs && {
     pitch: {
       title: inputs.title,
       subtitle: inputs.subtitle
     },
-    actions: attributes && attributes.actions && attributes.actions
-      .map(({ label, ...rest }) => ({ children: label, ...rest })),
+    actions: ((attributes && attributes.actions && attributes.actions) || [])
+      // .map(({ label, ...rest }) => ({ children: label, ...rest })),
+      // .map(({ label, ...rest }) => ({ children: label, ...rest })),
+      .map(el => Object.entries(el))
+      .map(([[to, children]]) => ({ to, children })),
     art: inputs.art && inputs.art.url // && `https://media.graphcms.com/${inputs.art.handle}`
     // actions:
   })
