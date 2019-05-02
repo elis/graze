@@ -1,0 +1,80 @@
+---
+name: Setting Up
+route: /getting-started
+menu: Getting Started
+---
+import { ProTip } from './'
+import styled from 'styled-components'
+
+# Setting Up Graze
+
+To create a new Graze project using [NPX](https://www.npmjs.com/package/npx) run:
+
+```bash
+$ npx create-graze-app my-project my-heroku-app https://api-euwest.graphcms.com/v1/cjv1i750d3ck501ehkkpiprx8/master
+```
+
+Or by installing [`create-graze-app`](https://npmjs.com/package/create-graze-app) as a global executable:
+
+```bash
+$ npm add -g create-graze-app
+
+...
+
+$ create-graze-app my-project my-heroku-app https://api-euwest.graphcms.com/v1/cjv1i750d3ck501ehkkpiprx8/master
+```
+
+Or by using Yarn's [**create**](https://yarnpkg.com/lang/en/docs/cli/create/) command:
+
+
+```bash
+$ yarn create graze-app my-project my-heroku-app https://api-euwest.graphcms.com/v1/cjv1i750d3ck501ehkkpiprx8/master
+```
+
+This will run through the installation process and create your project directory ready to start working with and to quickly deploy the result to your favorite cloud provider.
+
+Once the setup is complete, cd into your project's directory and start the development server:
+
+```bash
+$ cd my-project
+
+$ yarn start
+```
+
+If you haven't modified any of the settings your app should be accessible on [localhost:3000](http://localhost:3000).
+
+**Screenshot**
+
+<ProTip title='### create-graze-site'>
+
+  `create-graze-app` is a package that helps with creating new Graze applications.
+
+  To learn more visit: https://npmjs.com/package/create-graze-app
+
+</ProTip>
+
+<ProTip title='### Heroku Appz'>
+
+  Alhtough this version comes with an integrated Heroku configuration,
+  you don't have to use Heroku to deploy your Graze app - any nodejs supporting
+  provider can be used.
+
+</ProTip>
+
+<ProTip title='### Heroku Free Account'>
+
+  Heroku is a great cloud provider and allows free accounts - it's highly recommended
+  to create an account and try it around - it's really awesome.
+  
+  [Create free Heroku account](https://signup.heroku.com/)
+
+</ProTip>
+
+<ProTip title='### GraphCMS'>
+  v0.1 of Graze comes with support for GraphCMS — a headless CMS provider with GraphQL
+  out of the box, which together with Graze's architecture is a great combination for
+  dynamic sites and apps.
+
+  GraphCMS allows creating free projects that allow you evaluate the service before committinng to it. While it's not absolutely required to use Graze it's highly recommended to give it a try: [Create GraphCMS account](https://app.graphcms.com/signup)
+</ProTip>
+

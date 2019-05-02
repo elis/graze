@@ -73,8 +73,15 @@ function installWithMessageFactory (opts, isExample = false) {
     'jss', // graze-material-ui
     'react-jss', // graze-material-ui
     '@material-ui/core', // graze-material-ui
+    
     'razzle-plugin-mdx', // graze-docs
-    'razzle-plugin-mdx-front-matter' // graze-docs
+    'razzle-plugin-mdx-front-matter',
+    'rehype-highlight',
+    'remark-slug',
+    'remark-autolink-headings',
+    '@material-ui/icons',
+    'react-highlight'
+
   ].sort((a, b) => a.length > b.length ? 1 : -1)
 
   return function installWithMessage () {

@@ -1,11 +1,47 @@
 ---
-name: Hello, World!
+name: Getting Started
 route: /
 ---
-# Welcome to your Documentation
+export { ProTip } from './utils'
+import { DocsRoot } from './utils'
+<DocsRoot />
 
-import CTA from 'components/cta'
+# Graze Documentation
 
-<CTA title='Example!'>
-  This is an example how easy it is to document your stuff.
-</CTA>
+Welcome to the official Graze documentation.
+
+To get started with a new Graze project:
+
+```sh
+$ npx create-graze-app my-dir my-heroku-app my-graphcms-api
+```
+
+Get up and runing in the [**Getting Started**](/getting-started) section.
+
+## Introduction
+
+Graze is a set of tools to let you build high performing applicatios using the modern stack without compromizes or penalties.
+
+It's designed to be blazing fast dynamic application that servers fully functional crisp looking applications rendered on the server-side.
+
+Based on the amazing [**Razzle**](https://github.com/jaredpalmer/razzle/) package that simplifies Server-side Rendering along with a convenient and full-featured development enviroment with all the modern bells and whistels such as Hot Module Reloading.
+
+Learn more in the [**Introduction Section**](/introduction).
+
+## Plugins
+
+Graze offers a simply yet powerful plugin API that gives you atmost control over your applications behaviour and fuctionality. Combined with the burgeoning eco-system of [Razzle plugins](https://www.npmjs.com/search?q=razzle-plugin) Graze is extremly capable and configurable to satisfy most projects needs.
+
+The plugins can hook into the entire applications' life-cycle on the server-side and on the client side. With an intuitive and simple [Plugin Structure](/plugins#plugin-structure) you can quickly give your application the ability to run without any client-side executing what-so-ever, making it a perfect solution for embedded systems and low-power requirements.
+
+Learn more about [Graze Plugins](/plugins).
+
+<hr />
+
+Find out more:
+
+- [Getting Started](/getting-started)
+- [Introduction](/introduction)
+- [Directory Structure](/directory-structure)
+- [Guides](/guides)
+  - [GraphCMS Setup](/guides/graphcms)

@@ -6,7 +6,7 @@ export const app = {
   onLoad: () => {
     const Tutorial = require('./tutorial').default
     const { default: { defineStaticRoute } } = require('@graze')
-
+    console.log('Graze Tutorial!')
     const hasSite = !!defineStaticRoute
     if (hasSite) {
       try {
@@ -15,7 +15,7 @@ export const app = {
           component: Tutorial
         })
       } catch (error) {
-        console.log('Error definig route:', error)
+        // console.log('Error definig route:', error)
       }
     }
     return {
@@ -24,9 +24,12 @@ export const app = {
   },
   Wrapper: ({ fields: { hasSite }, children }) => {
     const Tutorial = require('./tutorial').default
+    const { default: { useSite } } = require('@graze')
     const { default: Page } = require('components/page')
 
-    return hasSite
+    const site = hasSite && useSite && useSite()
+
+    return hasSite && site && site.name
       ? children
       : (
         <Page>

@@ -1,0 +1,111 @@
+---
+name: Directory Structure
+route: /directory-structure
+menu: Getting Started
+---
+
+# Directory Structure
+
+```bash
+$ cd my-project
+
+$ npx tree-cli -l 2     // the following is an embelished tree-cli output
+▁ 
+/Users/eli/projects/my-project
+
+├── src
+|  ├── components       // Store application specific components here
+|  |  ├── articles
+|  |  ├── page
+|  |  └── ...
+|  |
+|  ├── docs             // Store your app documentation here
+|  |  ├── index.mdx
+|  |  ├── getting-started.mdx
+|  |  └── ...
+|  |
+|  ├── pages            // Store various page types here
+|  |  ├── 404
+|  |  ├── index
+|  |  └── ...
+|  |
+|  ├── plugins          // Store general purpose Graze plugins here
+|  |  ├── graze-docs
+|  |  ├── graze-meta-tags
+|  |  └── ...
+|  |
+|  ├── index.js         // root application
+|  ├── client.js        // client-side exclusive code
+|  ├── server.js        // server-side exclusive code
+|  ├── app.js           // root react app
+|  ├── app.test.js      // test runner for app.js
+|  |
+|  ├── plugins.js       // plugin loading and handling
+|  └── @graze.js        // Helper with plugins
+|
+├── public              // Staticly served content
+|  └── ...
+|
+├── graze.config.js     // Graze configuration file
+|
+├── razzle.config.js    // Razzle configuration file
+|
+├── package.json        // Package and dependencies details
+├── Procfile            // Cloud provider directive to run the app 
+└── ...
+
+```
+
+## Components
+
+`./src/components/`
+
+Shared components.
+
+It's recommended to create here the root component of your app/site, and include it as an [**Addon**](/plugins/app#addon). You can then easily port this component from one Graze installation to another for quick and painless upgrades.
+
+Consider using a short-hand import/require syntax when loading components:
+
+```js
+import Article from 'components/articles'
+```
+
+It uses the `.env` file with a `NODE_PATH=src` to allow you to import directly from the `./src` directory much like it's done for `node-modules`.
+
+## Docs
+
+`./src/docs`
+
+This documentation.
+
+Consider this as a suggestion to how to organize your own documentation, and perhaps check out the awesome [**docz**](https://www.docz.site/) documentation generator - it's great for getting your documentation, code, and content all accessible in the same context.
+
+Content in the **docs** directory is expected to be of `.mdx` type and support the convenient [Front Matter](https://www.scribendi.com/advice/front_matter.en.html) pattern to embelish `mdx` documents with (usually) YAML properties.
+
+import { ProTip } from 'docs'
+
+<ProTip title='MDX'>
+
+  If you're not familiar with MDX — a powerful superset of Markdown — we highly recommend learing more about MDX and it's power: [**MDX - Markdown for the component era**](https://mdxjs.com/)
+  
+</ProTip>
+
+<ProTip title='gray-matter'>
+
+  Learn about [**gray-matter**](https://github.com/jonschlinkert/gray-matter) - the module used in Graze to compile Front Matter within `mdx` documents.
+
+</ProTip>
+
+Note that `graze-docs` and `docz` are only partially compatible at this point - so features available in one are not necesserily available in the other. This will improve soon as both projects mature.
+
+## Pages
+
+`./src/pages`
+
+Site pages that will be rendered.
+
+## Plugin
+
+`./src/plugins`
+
+Graze plugins installed locally.

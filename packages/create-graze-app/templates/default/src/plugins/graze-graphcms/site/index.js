@@ -11,6 +11,9 @@ const SiteBuild = props => {
   const { default: Routing } = require('./routing')
 
   // console.log(`🍝`, 'SITE BUILD', { types, parseTypes, props })
+  if (!types) {
+    return <div>No types</div>
+  }
   const parsedTypes = parseTypes(types)
   const issues = schemaIssues(parsedTypes)
   if (issues && issues.length) {

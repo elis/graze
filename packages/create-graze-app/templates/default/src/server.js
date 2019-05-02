@@ -9,6 +9,7 @@ const server = express()
 server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  .use(plugins.middleware)
   .get('/*', (req, res) => {
     const App = require('./app').default
     const context = {}

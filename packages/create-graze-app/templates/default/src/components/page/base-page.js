@@ -9,9 +9,31 @@ import { Icon as BrandIcon } from '../graze-brand'
 
 import { SiteContext } from '../../plugins/graze-graphcms/site'
 import Footer from '../footer'
+import plugins from '@graze'
+
+const SiteFonts = createGlobalStyle`
+/* Benton Sans */
+@import url('https://use.typekit.net/dnb2hbr.css');
+:root {
+  --site-font-family: benton-sans, sans-serif
+}
+body {
+  font-family: benton-sans, sans-serif;
+  font-family: var(--site-font-family);
+  h1, h2, h3, h4, h5, h6,
+  p {
+    font-family: var(--site-font-family);
+  }
+  h1, h2, h3 {
+    font-weight: 500;
+  }
+}
+`
+
 
 const BasePage = props => (
   <PageEl className='main-view' {...props}>
+    <SiteFonts />
     <Header>
       <BrandIcon />
     </Header>
@@ -22,12 +44,18 @@ const BasePage = props => (
 
 export default BasePage
 
+const baseRoutes = [
+  { title: 'Documentation', to: '/docs' },
+  { title: 'Tutorial', to: '/__tutorial' }
+]
+
 const getNavItems = (pages, staticRoutes) => pages && !!pages.length && pages
   .filter(({ slug }) => slug !== 'index')
   .map(({ slug, title }) => ({ slug, title }))
 
 const Header = props => {
-  const { state: site } = useContext(SiteContext)
+  const { useSite } = plugins
+  const { state: site } = (useSite && useSite()) || {}
   const pages = site && site.grazePages
   const { staticRoutes, extraRoutes } = site || {}
   const [nav, setNav] = useState(getNavItems(pages))
@@ -53,12 +81,17 @@ const Header = props => {
           {nav && !!nav.length && nav.map((item, i) => (
             <NavHref key={`nav ${i}`} className='f6 fw4 hover-white no-underline ml2 white-70 dn dib-ns pv2 ph3' to={`/${item.slug}`}>{item.title}</NavHref>
           ))}
-          {routes && !!routes.length && routes
-            .filter(({title, label}) => !!(title || label))
-            .map((item, i) => (
-              <NavHref key={`nav route static ${i}`} className='f6 fw4 hover-white no-underline ml2 white-70 dn dib-ns pv2 ph3' to={`${item.to || item.path}`}>{item.title || item.label}</NavHref>
-            ))}
-          <NavHref className='f6 fw4 hover-white no-underline white-70 dib ml2 pv2 ph3' to='/__tutorial'>Tutorial</NavHref>
+          {(routes && !!routes.length)
+            ? routes
+              .filter(({title, label}) => !!(title || label))
+              .map((item, i) => (
+                <NavHref key={`nav route static ${i}`} className='f6 fw4 hover-white no-underline ml2 white-70 dn dib-ns pv2 ph3' to={`${item.to || item.path}`}>{item.title || item.label}</NavHref>
+              ))
+            : baseRoutes
+              .map((item, i) => (
+                <NavHref key={`nav route base ${i}`} className='f6 fw4 hover-white no-underline ml2 white-70 dn dib-ns pv2 ph3' to={`${item.to || item.path}`}>{item.title || item.label}</NavHref>
+              ))
+          }
           <a className='f6 fw4 hover-white no-underline white-70 dib ml2 pv2 ph3 ba' href='https://github.com/elis/graze'>GitHub</a>
         </NavCell>
       </NavEl>

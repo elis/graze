@@ -2,8 +2,12 @@ export const plugins = [
   require('./src/plugins/graze-styled-components'),
   require('./src/plugins/graze-material-ui'),
   require('./src/plugins/graze-graphcms'),
+  {
+    module: require('./src/plugins/graze-docs'),
+    source: './src/docs',
+    route: '/docs'
+  },
   require('./src/plugins/graze-tutorial'),
-  require('./src/plugins/graze-docs'),
   require('./src/plugins/graze-helmet'),
   require('./src/plugins/graze-scroll-to-top'),
   require('./src/plugins/graze-meta-tags'),

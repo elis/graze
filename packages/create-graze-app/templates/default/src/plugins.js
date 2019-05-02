@@ -213,10 +213,30 @@ const prepareAppAddons = (acc, Plugin) => (
     : acc
 )
 
+// Plugin `expose` reducer
+const onMiddleware = (req, res, next) => (acc, Plugin) => (
+  acc || (Plugin.middleware && Plugin.middleware(req, res, next))
+)
+const getMiddlewares = (req, res, next) =>
+  fold(onMiddleware(req, res, next), false, getPlugin('server', 'middleware'))
+
+export const middleware = (req, res, next) => {
+  let activated
+  const doNext = () => {
+    if (!activated) {
+      activated = true
+      next()
+    }
+  }
+  const middlewares = getMiddlewares(req, res, doNext)
+  if (!middlewares) doNext()
+}
+
 export default {
   doOnRequest,
   wrap,
   app,
   exposed: exposedPlugins(),
-  Addons
+  Addons,
+  middleware
 }
