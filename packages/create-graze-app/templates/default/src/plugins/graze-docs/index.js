@@ -15,7 +15,6 @@ export const app = {
     const plugins = require('@graze').default
     const { defineStaticRoute } = plugins
     const options = Object.assign({}, defaultOptions, userOptions)
-    console.log('what are options?', options)
     options.source = options.source.match(/\/$/)
       ? options.source.replace(/(\/)$/, '')
       : options.source
@@ -28,7 +27,6 @@ export const app = {
       ? options.route.replace(/(\/)$/, '')
       : options.route
 
-    console.log('what are options?', options)
     
     options.routePath = options.route + '/:section(.*)?'
 
@@ -36,7 +34,6 @@ export const app = {
 
     const hasSite = !!defineStaticRoute
     if (hasSite) {
-      console.log('HAS SITE', {options, Documentation})
       try {
         defineStaticRoute({
           title: options.title,
@@ -48,7 +45,6 @@ export const app = {
         console.log('Error definig route:', error)
       }
     }
-    console.log('NO SITE', {options, Documentation})
     return {
       hasSite,
       Documentation,
@@ -60,7 +56,6 @@ export const app = {
     const { default: Page } = require('components/page')
 
     const site = hasSite && useSite && useSite()
-    console.log('=== === === === === === site', {options, Documentation, site})
 
     return hasSite && site && site.name
       ? children

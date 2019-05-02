@@ -29,7 +29,6 @@ export const Documentation = withRouter(({match, location, children, options, ..
   const { hash } = location
   const { route, source } = options
 
-  console.log(`🐷`, 'Documentation match?', match, props.location)
   const Comp = useMemo(() => {
     const dir = path.resolve('../../../', './src/docs') //, '../../', source, '/', section || '')
     try {
@@ -46,7 +45,6 @@ export const Documentation = withRouter(({match, location, children, options, ..
       const pos = document.querySelector(hash)
       const { offsetTop, scrollHeight, offsetHeight } = pos || {}
       const top = (offsetTop || 0) - 80 - (scrollHeight || 0) - (offsetHeight || 0)
-      console.log(`🐒`, 'hash pos:', pos)
       try {
         window.scroll({
           top,
@@ -88,31 +86,23 @@ const menu = require('../../docs/menu').default
 
 const walkMenu = items => items && items.length > 0 && items
   .map((item, i) => (
-    // console.log(`🌼`, 'menu item:', item) ||
     {...item, menu: walkMenu(item.menu), sections: loadSections(item)}
   ))
 
 const loadSections = item => {
-  // console.log(`🌼`, 'Loadinng sectios?', item.route)
-  // return []
   try {
     if (item && item.route) {
-      // console.log(`🌼`, 'D', {r: item.route.replace(/^(\/)/, '')})
       const doc = require('../../docs/' + item.route.replace(/^(\/)/, ''))
-      // console.log(`🌼`, 'Loaded doc?', doc)
       const { documentHeadings } = doc || {}
-      console.log(`🌼`, 'Headings?', documentHeadings)
       const second = (documentHeadings && documentHeadings.length > 0)
         ? documentHeadings
             .map(heading => Object.entries(heading))
             .map(([[tag, value]]) => [tag, value])
-            // .map(([tag, value]) => console.log(`🌼🙂`, tag, value) || [tag, value])
             .filter(([tag]) => tag === 'h2')
             .map(([tag, value]) => ([value, value.toLowerCase()
                 .replace(' ', '-')
                 .replace(/[^a-z0-9-_]+/img, '')]))
         : null
-      console.log(`🌼`, 'second?', second)
       return second
     }
 
@@ -124,7 +114,6 @@ const loadSections = item => {
 const itemied = walkMenu(menu)
 
 const SideNav = withRouter(({className, toggleMenu, dismissMenu, ...props}) => {
-  console.log(`🌼`, 'What is itemied? ', itemied)
   return (
     <SideNavEl className={`tl flex ph0 ${className}`}>
       <Handle onClick={toggleMenu} className='menu-handle' />

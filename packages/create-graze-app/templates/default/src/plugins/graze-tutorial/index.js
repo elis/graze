@@ -6,7 +6,6 @@ export const app = {
   onLoad: () => {
     const Tutorial = require('./tutorial').default
     const { default: { defineStaticRoute } } = require('@graze')
-    console.log('Graze Tutorial!')
     const hasSite = !!defineStaticRoute
     if (hasSite) {
       try {

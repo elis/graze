@@ -1,43 +1,83 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { Switch, Route } from 'react-router-dom'
+import plugins from '@graze'
+const { compileAttributes } = plugins
 
-export default ({ page, props }) => {
-  const Page = require('../../components/page').default
-  const gm = require('gray-matter')
+export default ({page, ...props}) => {
+  const Page = require('components/page').default
+  const { Feature: ArticleFeature } = require('components/graze-site/components/github/repository')
   const Mark = require('react-markdown')
-  const { default: ArticlesList, Article } = require('../../components/articles/list')
-  const [ attributes, setAttributes ] = useState()
-  const [ body, setBody ] = useState()
+  const fm = require('gray-matter')
+  const { default: Feature } = require('./feature')
 
-  useEffect(() => {
-    try {
-      const { data: a, content: b } = gm(page && page.content)
-      setAttributes(a)
-      setBody(<Mark>{b}</Mark>)
-    } catch (error) {
-      const { ErrorBlock } = require('../../components/error')
-      setBody(<ErrorBlock error={error} details={{ page, content: page && page.content }} />)
-    }
-  }, [page && page.content])
+  const { url } = props.match
+  const { data: attributes, content: body } = fm(page && page.content)
+  const compiledAttributes = compileAttributes(attributes, {page, ...props})
 
   return (
-    <Page {...props}>
-      {attributes && attributes.features && (
-        <ArticlesList title={page.title}>
-          {attributes.features.map((feat, index) => (
-            <Article key={`feature ${index}`} slug={feat.slug} title={feat.title} art={feat.art}>
-              <Mark>{feat.subtitle}</Mark>
-            </Article>
-          ))}
-        </ArticlesList>
-      )}
-      {!attributes && (
+    <Switch>
+      <Route path={`${url}`} exact render={routeProps => (
         <React.Fragment>
-          <h2>{page.title}</h2>
+          {compiledAttributes && compiledAttributes.features && (
+            <Listing title={compiledAttributes.title || page.title} description={compiledAttributes.description} url={url} features={compiledAttributes.features} />
+          )}
+          {!compiledAttributes && (
+            <React.Fragment>
+              <h2>{page.title}</h2>
+            </React.Fragment>
+          )}
+          <section className='mw8 ph6-l ph3 pv4 avenir center lh-copy'>
+            <Mark escapeHtml={false}>{body}</Mark>
+          </section>
+          <section className='pv4 ph3 avenir center lh-copy justify-center flex flex-wrap'>
+            {page.grazeExtraFeatures && page.grazeExtraFeatures
+              .map(feature => ({...feature, ...require('gray-matter')(feature.description)}))
+              .map(({data, content, ...feature}) => ({...feature, attributes: compileAttributes(data, props), body: content}))
+              .map((feature, index) => (
+                <ArticleFeature feature={feature} key={`feature article ${index}`} className='tl' />
+              )
+            )}
+          </section>
         </React.Fragment>
+      )} />
+
+      <Route path={`${url}/:featureSlug`} render={routeProps => {
+        const feature = compiledAttributes && compiledAttributes.features &&
+          !!compiledAttributes.features.length &&
+          compiledAttributes.features
+            .find(({slug}) => (`${slug}` === `${routeProps.match.params.featureSlug}`))
+
+        if (!feature) {
+          const { Redirect } = require('react-router-dom')
+          return <Redirect to={url} />
+        }
+        return (
+          <Feature {...routeProps} feature={feature}
+        />
+      )}} />
+    </Switch>
+  )
+}
+
+const Listing = ({title, features, description, url, props}) => {
+  const { default: ArticlesList, Article } = require('components/articles/list')
+  const Mark = require('react-markdown')
+  const fm = require('gray-matter')
+
+  const { content: body } = fm(description)
+
+  return (
+    <ArticlesList title={title}>
+      {body && (
+        <section className='ph0-l ph3-m ph3 lh-copy f4'>
+          <Mark>{body}</Mark>
+        </section>
       )}
-      <section className='mw8 ph4 pv4'>
-        {body}
-      </section>
-    </Page>
+      {features.map((feat, index) => (
+        <Article key={`feature ${index}`} slug={`${url}/${feat.slug}`} title={feat.title} art={feat.previewArt && feat.previewArt.url}>
+          <Mark>{feat.description}</Mark>
+        </Article>
+      ))}
+    </ArticlesList>
   )
 }

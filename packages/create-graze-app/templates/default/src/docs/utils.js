@@ -15,18 +15,15 @@ export const DocsRoot = () => {
 }
 
 export const ProTip = props => (
-  console.log('What are children?', props) ||
   <TipEl className='mw7 lh-copy flex mv3'>
     <IconContainer className='ph3 pv2'><InfoIcon /></IconContainer>
     <Content className='ph2 pv2'>
       {props.title && (<Mark>{props.title}</Mark>)}
       {(props.children && (props.children.length > 0 || typeof props.children !== 'string'))
         ? (
-          console.log('DONT MARK', props.title) ||
           props.children
         )
         : (
-          console.log('MARK', props.title) ||
           <Mark>{props.children}</Mark>
         )
       }
