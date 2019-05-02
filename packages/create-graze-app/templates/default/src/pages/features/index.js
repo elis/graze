@@ -5,7 +5,6 @@ const { compileAttributes } = plugins
 
 export default ({page, ...props}) => {
   const Page = require('components/page').default
-  const { Feature: ArticleFeature } = require('components/graze-site/components/github/repository')
   const Mark = require('react-markdown')
   const fm = require('gray-matter')
   const { default: Feature } = require('./feature')
@@ -34,7 +33,7 @@ export default ({page, ...props}) => {
               .map(feature => ({...feature, ...require('gray-matter')(feature.description)}))
               .map(({data, content, ...feature}) => ({...feature, attributes: compileAttributes(data, props), body: content}))
               .map((feature, index) => (
-                <ArticleFeature feature={feature} key={`feature article ${index}`} className='tl' />
+                <div key={`feature ${index} a`}>{feature.title}</div>
               )
             )}
           </section>
