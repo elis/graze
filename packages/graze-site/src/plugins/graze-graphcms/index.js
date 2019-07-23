@@ -1,13 +1,21 @@
 import React from 'react'
+const name = 'graze-graphcms'
 
 export const server = {
+  name,
   onRequest: () => {
     const { getClient } = require('./graphcms')
     const axios = require('axios')
 
     const apolloClient = getClient({
       ssrMode: true,
-      fetch: axios
+      fetch: axios,
+      errorHandler: (...args) => {
+        console.log('we got error friends.', args)
+        return new Promise(resolve => {
+          resolve('Errorrring')
+        })
+      }
     })
 
     return {
@@ -35,6 +43,7 @@ export const server = {
 }
 
 export const client = {
+  name,
   onLoad: () => {
     const { getClient } = require('./graphcms')
     const apolloClient = getClient()
@@ -58,6 +67,7 @@ export const client = {
 }
 
 export const app = {
+  name,
   onLoad: () => {
     const { SiteContext, defineStaticRoute } = require('./site')
     return {
@@ -82,6 +92,7 @@ export const app = {
     OnDemandComponentModel: require('./site/on-demand').OnDemandComponentModel,
     onDemandSections: require('./site/on-demand').onDemandSections,
 
-    compileAttributes: require('./site/utils').compileAttributes
+    compileProperties: require('./site/utils').compileProperties,
+    compileModel: require('./site/utils').compileModel
   })
 }

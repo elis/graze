@@ -1,7 +1,9 @@
 import React, { createContext, useEffect, useContext } from 'react'
 import { withRouter } from 'react-router-dom'
+const name = 'graze-ga'
 
 export const server = {
+  name,
   onRequest: (options) => {
     return {
       options
@@ -22,6 +24,7 @@ export const server = {
 
 const Context = createContext({ pimplim: 'plom' })
 export const app = {
+  name,
   onLoad: (options) => {
     const ReactGA = require('react-ga')
 

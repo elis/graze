@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { Query } from 'react-apollo'
+import { getClient } from '../graphcms'
 import gql from 'graphql-tag'
 
 export { SiteContext, useSite, defineStaticRoute } from './routing'
@@ -11,6 +12,9 @@ const SiteBuild = props => {
   const { default: Routing } = require('./routing')
 
   // console.log(`🍝`, 'SITE BUILD', { types, parseTypes, props })
+  if (!types) {
+    return <div>No types</div>
+  }
   const parsedTypes = parseTypes(types)
   const issues = schemaIssues(parsedTypes)
   if (issues && issues.length) {
@@ -76,7 +80,7 @@ const SiteBuild = props => {
             </Switch>
           )
         }
-        return <Routing data={{ site: data && data.site, error }}>{props.children}</Routing>
+        return <Routing parsedTypes={parsedTypes} data={{ site: data && data.site, error }}>{props.children}</Routing>
       }}
     </Query>
   )
@@ -84,10 +88,15 @@ const SiteBuild = props => {
 
 export default props => {
   return (
-    <Query query={require('./queries/types-schema').default} onError={(error) => {
-      console.error('Error with Query:', error)
-    }} errorPolicy='all'>
+    <Query
+      notifyOnNetworkStatusChange
+      query={require('./queries/types-schema').default} onError={(error) => {
+        console.error('Error with Query:', error)
+      }} errorPolicy='all'>
       {({ loading, error, data }) => {
+        if (error) {
+          console.log('WHAT THE ERROR?', error)
+        }
         return <SiteBuild {...{ loading, error, data }}>{props.children}</SiteBuild>
       }}
     </Query>

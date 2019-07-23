@@ -41,6 +41,9 @@ const parseError = ({ code, message, details, ...error }, context) => {
           Create a <code>Site</code> named <code>root</code>
           in your <code>Site</code>'s model content.
         </p>
+        <p>
+          <a href='/docs/guides/graphcms'>Boot GraphCMS</a>
+        </p>
       </div>
     }
   }

@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react'
 
+const name = 'graze-material-ui'
+
 export const server = {
+  name,
   version: 0.1,
   onRequest: (req, res, options) => {
     const { SheetsRegistry } = require('jss')
@@ -61,6 +64,7 @@ export const server = {
 }
 
 export const client = {
+  name,
   onLoad: (options) => {
     const {
       createMuiTheme,

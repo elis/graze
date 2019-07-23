@@ -2,16 +2,49 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-export default ({ title, children, className, ...props }) => {
+export const ArticlesList = ({ title, children, className, ...props }) => {
   return (
-    <ArticlesList className={`mw7 center avenir ${className}`}>
+    <ArticlesListEl className={`mw7 center avenir ${className}`}>
       <h2 className='evenir fw1 ph3 ph0-l'>{title}</h2>
       {children}
-    </ArticlesList>
+    </ArticlesListEl>
   )
 }
 
-export const transformModel = inputs => (
+export default ArticlesList
+
+ArticlesList.transformModel = (inputs, type) => {
+  // console.log('Transforming Articles List!')
+
+  const result = {
+    title: inputs.title || '',
+    children: inputs instanceof Array
+      ? inputs.map(transformArticleModel)
+        .map(({ slug, ...props }) => ({
+          ...props,
+          slug: inputs.articleSlug ? `${inputs.articleSlug}/${slug}` : slug
+        }))
+        .map((props, index) => (
+          <Article key={`article tm ${index}`} {...props} />
+        ))
+      : inputs.articles
+        ? inputs.articles.map(transformArticleModel)
+          .map(({ slug, ...props }) => ({
+            ...props,
+            slug: inputs.articleSlug ? `${inputs.articleSlug}/${slug}` : slug
+          }))
+          .map((props, index) => (
+            <Article key={`article tm ${index}`} {...props} />
+          ))
+        : null
+  }
+  // console.log('Transformed Articles List!', result)
+  return {
+    ...result
+  }
+}
+
+export const transformModelX = inputs => (
   {
     title: inputs.title,
     children: inputs.articles.map(transformArticleModel)
@@ -34,7 +67,7 @@ export const Article = ({ slug, title, subtitle, art, children, ...props }) => (
         <div className='w-100 w-60-ns pitch'>
           <h1 className='f3 fw1 evenir mt0 lh-title'>{title}</h1>
           <p className='f6 f5-l lh-copy'>
-            {subtitle}
+            {subtitle && (subtitle.content || subtitle)}
           </p>
           {children}
         </div>
@@ -97,150 +130,6 @@ const ArticleItem = styled.article`
   }
 `
 
-const ArticlesList = styled.section`
+const ArticlesListEl = styled.section`
   max-width: 48rem;
-.bt {
-    border-top-style: solid;
-    border-top-width: 1px;
-}
-
-.bb {
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  &:last-of-type {
-      border-bottom: 0;
-  }
-}
-
-.b--black-10 {
-    border-color: rgba(0, 0, 0, .1);
-}
-
-.db {
-    display: block;
-}
-
-.flex {
-    display: flex;
-}
-
-.flex-column {
-    flex-direction: column;
-}
-
-.avenir {
-    font-family: 'avenir next', avenir, sans-serif;
-}
-
-.fw1 {
-    font-weight: 100;
-}
-
-.lh-title {
-    line-height: 1.25;
-}
-
-.lh-copy {
-    line-height: 1.5;
-}
-
-.mw7 {
-    max-width: 48rem;
-}
-
-.black {
-    color: #000;
-}
-
-.pv4 {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-}
-
-.ph3 {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-.mb4 {
-    margin-bottom: 2rem;
-}
-
-.mt0 {
-    margin-top: 0;
-}
-
-.mv0 {
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-.no-underline {
-    text-decoration: none;
-}
-
-.f3 {
-    font-size: 1.5rem;
-}
-
-.f6 {
-    font-size: .875rem;
-}
-
-.center {
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.dim {
-    opacity: 1;
-    transition: opacity .15s ease-in;
-}
-
-.dim:hover, .dim:focus {
-    opacity: .5;
-    transition: opacity .15s ease-in;
-}
-
-.dim:active {
-    opacity: .8;
-    transition: opacity .15s ease-out;
-}
-
-@media screen and (min-width: 30em) {
-    .flex-row-ns {
-        flex-direction: row;
-    }
-
-    .w-40-ns {
-        width: 40%;
-    }
-
-    .w-60-ns {
-        width: 60%;
-    }
-
-    .pl3-ns {
-        padding-left: 1rem;
-    }
-
-    .pr3-ns {
-        padding-right: 1rem;
-    }
-
-    .mb0-ns {
-        margin-bottom: 0;
-    }
-}
-
-@media screen and (min-width: 60em) {
-    .ph0-l {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    .f5-l {
-        font-size: 1rem;
-    }
-}
 `

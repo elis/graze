@@ -1,0 +1,30 @@
+---
+name: Site Properties
+route: /guides/site/properties
+menu: Guides/Site
+---
+
+# Site Properties
+
+A `Site` type is expected to contain:
+
+- Name
+- Description
+- [Content](./#content)
+- Index
+- Graze Pages
+- Favicon
+- Preview Image
+- Title
+- Google Analytics
+
+## Content
+
+Front-matter Markdown field 
+
+### pageComponennt
+
+The **Page** component provided with Graze default setup will attempt to
+load `site.attributes.pageComponent` as a component instead of the regular `base-page`. 
+
+Note that if you're using other Graze plugins that might include the **Page** component earlier up the component tree the **Page** component might not behave correctly.

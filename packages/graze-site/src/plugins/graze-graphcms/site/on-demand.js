@@ -63,17 +63,37 @@ export const onDemand = (page, path, preload, payload) => {
 
 export const preload = page => onDemand(page, '', true)
 
-export const OnDemandComponent = ({ component, exp, ...props }) => {
-  const Component = onDemandComponent(component, props, exp)
+export const OnDemandComponent = ({ component, exp, context, ...props }) => {
+  const Component = onDemandComponent(component, props, exp, context)
   return <Component />
 }
 
-export const onDemandComponent = (component, payload, exp) => {
+export const onDemandComponent = (component, payload, exp, context) => {
   try {
     if (exp) {
       return require('components/' + component)[exp]
     }
     const { default: Component } = require('components/' + component)
+
+    if (payload.model) {
+      if (Component.transformModel && typeof Component.transformModel === 'function') {
+        const { model, ...rest } = payload
+        // console.log(`🍭`, 'onDemandComponent:', `±${component}`, { model, payload, context })
+
+        const { compileModel } = require('./utils')
+        const [ compiledModel, modelType ] = (Object.keys(model).length > 0)
+          ? compileModel(model, context)
+          : [ { __NO_KEYS: true } ]
+        // console.log(`🍭`, 'model:', model, model['__typename'], __typename, parsedTypes[__typename])
+        // console.log(`🍭`, 'modelType:', modelType)
+        // console.log(`🍭`, 'Compiled model:', compiledModel)
+
+        const transformedModel = {
+          ...(Component.transformModel(compiledModel || {}, modelType) || {})
+        }
+        return props => <Component {...props} {...rest} {...transformedModel} />
+      }
+    }
     return props => <Component {...props} {...payload} />
   } catch (error) {
     const { ErrorBlock } = require('components/error')
@@ -81,9 +101,10 @@ export const onDemandComponent = (component, payload, exp) => {
   }
 }
 
-export const OnDemandComponentModel = ({ component, ...props }) => {
+export const OnDemandComponentModel = ({ component, context, ...props }) => {
   try {
     const { transformModel } = require('components/' + component)
+    // v1
     if (typeof transformModel === 'function') {
       const model = transformModel(props.model)
       return <OnDemandComponent component={component} {...model} />
@@ -91,16 +112,22 @@ export const OnDemandComponentModel = ({ component, ...props }) => {
   } catch (error) {
     console.log('error with transform:', error)
   }
-  return <OnDemandComponent component={component} {...props.model} />
+  return <OnDemandComponent component={component} model={props.model} context={context} />
 }
 
-export const onDemandSections = (sections, context) => (
+export const onDemandSections = (sections, context, Wrapper) => (
   sections
     .map(section => Object.entries(section))
     .map(([[comp, options]], index) => (
-      <OnDemandComponentModel
-        key={`page section ${index}`}
-        model={options}
-        component={comp} {...context} />
+      Wrapper
+        ? <Wrapper {...{ options, context, comp, index }} key={`page section ${index}`}>
+          <OnDemandComponentModel
+            model={options}
+            component={comp} {...context} context={context} />
+        </Wrapper>
+        : <OnDemandComponentModel
+          key={`page section ${index}`}
+          model={options}
+          component={comp} {...context} context={context} />
     ))
 )

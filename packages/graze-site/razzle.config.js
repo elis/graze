@@ -1,6 +1,17 @@
 module.exports = {
   modify: require('razzle-heroku'),
   plugins: [
-    'mdx', 'mdx-front-matter'
+    {
+      name: 'mdx',
+      options: {
+        mdPlugins: [
+          require('rehype-highlight'),
+          require('./src/plugins/graze-docs/mdx-plugin'),
+          require('remark-slug'),
+          require('remark-autolink-headings')
+        ]
+      }
+    },
+    'mdx-front-matter'
   ]
 }

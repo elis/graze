@@ -9,6 +9,7 @@ const server = express()
 server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  .use(plugins.middleware)
   .get('/*', (req, res) => {
     const App = require('./app').default
     const context = {}
@@ -30,6 +31,7 @@ server
         try {
           resolve(renderToString(wrappi))
         } catch (error) {
+          const ErrorMsg = require('components/error')
           console.error('Problem with rendering to string:', error)
           resolve(`<div>Error rendering: ${error} <pre>${error.stack}</pre></div>`)
         }

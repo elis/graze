@@ -2,7 +2,6 @@ export const plugins = [
   require('./src/plugins/graze-styled-components'),
   require('./src/plugins/graze-material-ui'),
   require('./src/plugins/graze-tutorial'),
-  require('./src/plugins/graze-graphcms'),
   require('./src/plugins/graze-helmet'),
   require('./src/plugins/graze-scroll-to-top'),
   require('./src/plugins/graze-meta-tags'),
@@ -16,5 +15,6 @@ export const plugins = [
     module: require('./src/plugins/graze-ga'),
     trackingId: 'UA-138092593-1', // Graze installation statistics - change to your trackingId
     gaOptions: { name: 'graze-setup' }
-  }
+  },
+  require('./src/plugins/graze-graphcms')
 ]

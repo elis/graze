@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 
+const name = 'graze-scroll-to-top'
+
 const isSSR = typeof window === 'undefined'
 export const app = {
+  name,
   plugin: 'scroll-to-top',
   onLoad: () => ({}),
   Wrapper: ({ children }) => {

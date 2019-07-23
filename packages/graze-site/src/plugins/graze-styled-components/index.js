@@ -1,6 +1,9 @@
 import React from 'react'
 
+const name = 'graze-styled-components'
+
 export const server = {
+  name,
   onRequest: (req, res, options) => {
     const { ServerStyleSheet } = require('styled-components')
 

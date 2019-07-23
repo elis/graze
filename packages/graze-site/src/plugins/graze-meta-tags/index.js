@@ -1,6 +1,9 @@
 import React from 'react'
 
+const name = 'graze-meta-tags'
+
 export const app = {
+  name,
   onRender: () => {
     return {}
   },

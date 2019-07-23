@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 
+const name = 'graze-tachyons'
+
 export const server = {
+  name,
   onRequest: () => {
     const styles = require('tachyons/css/tachyons.min.css')
     return {
@@ -16,6 +19,7 @@ export const server = {
 }
 
 export const client = {
+  name,
   onLoad: ({ persist }) => ({ persist }),
   Wrapper: ({ fields: { persist }, ...props }) => {
     if (!persist) {

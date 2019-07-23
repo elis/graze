@@ -1,11 +1,13 @@
-import React, { createContext, useEffect, useMemo, useContext, useState } from 'react'
+import React, { createContext, useEffect, useMemo, useContext, useState, useCallback } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { onDemand, preload, onDemandSections } from './on-demand'
+import { compileModel } from './utils'
 
 export const SiteContext = createContext({})
 const isSSR = typeof window === 'undefined'
 
 export default props => {
+  const { parsedTypes } = props
   const { site, error } = props.data
   const { grazePages: pages } = site || {}
 
@@ -32,16 +34,16 @@ export default props => {
     const ErrorMsg = require('../../../components/error').default
     return <ErrorMsg error={{ issue: 'No site' }} />
   }
+  console.log(`👙`, 'MODEL', { ...site })
+  
+  const [ compiledModel ] = compileModel(site, { site }, parsedTypes)
 
-  const { data: attributes, content: body } = site.content
-    ? require('gray-matter')(site.content)
-    : { data: {}, content: '' }
-  const attrs = require('./utils').compileAttributes(attributes, { site })
+  console.log(`👙`, 'COMPILED MODEL', { ...compiledModel })
 
   return (
     <React.Fragment>
-      <SiteContext.Provider value={{ ...site, attributes: attrs, body }}>
-        <SiteRoutes {...props} />
+      <SiteContext.Provider value={{ ...site, ...compiledModel, attributes: (compiledModel.content || {}).data, body: (compiledModel.content || {}).content }}>
+        <SiteRoutes {...props} parsedTypes={parsedTypes} />
       </SiteContext.Provider>
     </React.Fragment>
   )
@@ -73,9 +75,12 @@ export const defineStaticRoute = route => {
 const SiteRoutes = props => {
   const { default: Page } = require('components/page')
   const state = useSite()
+  const { parsedTypes } = props
   const { site, error } = props.data
-  const { grazePages: pages } = props.data.site || {}
+  const { grazePages: pages } = state || {}
+  const [ siteOptions, setSiteOptions ] = useState({})
 
+  // console.log(`🛣`, 'SITE ROUTES', { state, pages })
   const [ extraRoutes, setExtraRoutes ] = useState([])
 
   const getRoute = path => extraRoutes.find(r => r.path === path)
@@ -95,9 +100,10 @@ const SiteRoutes = props => {
   const routes = useMemo(() => {
     return [
       ...((pages && pages.length > 0 && pages
+        // .map(page => (console.log(`🛣`, 'SITE ROUTES PAGE', page) || page))
         .map(page => ({
           ...page,
-          RouterComp: onDemand(page.slug, `/${page.slug}`, false, { page, site, error })
+          RouterComp: onDemand(page.slug, `/${page.slug}`, false, { page, site: state, error })
         }))
         .map((page, index) => (
           <Route
@@ -110,7 +116,7 @@ const SiteRoutes = props => {
           <Route
             key={`site extra-route ${index}`}
             {...route}
-            component={onDemand(component, route.path, false, { site, error })}
+            component={onDemand(component, route.path, false, { site: state, error })}
           />
         )) || []),
       ...(staticRoutes.routes
@@ -118,22 +124,42 @@ const SiteRoutes = props => {
           <Route
             key={`site static-route ${index}`}
             {...route}
-            component={onDemand(component, route.path, false, { site, error })}
+            component={onDemand(component, route.path, false, { site: state, error })}
           />
         )) || [])
     ]
   }, [pages, extraRoutes, staticRoutes.routes])
 
   const Index = useMemo(() => (
-    onDemand('index', '/', false, { page: site && site.index, site, error })
+    onDemand('index', '/', false, { page: state && state.index, site: state, error })
   ), [site && site.index])
+
+  const onVisiblityChange = useCallback((visible, propsi) => {
+    console.log(`👁`, 'Visiblity changed', visible, propsi)
+    
+  }, [])
+
+  const setOverrides = useCallback((options) => {
+    console.log(`🐷`, 'setting overrdies:', options)
+    const beforeChange = {}
+    setSiteOptions(opts => {
+      Object.assign(beforeChange, opts)
+      return { ...opts, ...options }
+    })
+
+    return () => {
+      setSiteOptions(opts => ({ ...beforeChange }))
+    }
+  }, [])
 
   const actions = {
     addExtraRoute,
     defineStaticRoute,
     onDemand,
     preload,
-    onDemandSections
+    onDemandSections,
+    onVisiblityChange,
+    setOverrides
   }
 
   return (
@@ -141,7 +167,9 @@ const SiteRoutes = props => {
       state: {
         ...state,
         extraRoutes,
-        staticRoutes: staticRoutes.routes
+        staticRoutes: staticRoutes.routes,
+        parsedTypes,
+        siteOptions
       },
       actions
     }}>

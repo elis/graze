@@ -1,4 +1,8 @@
+
+const name = 'graze-scroll-to-top'
+
 export const server = {
+  name,
   onRequest: () => ({}),
   output: () => {
     const { Helmet } = require('react-helmet')

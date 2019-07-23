@@ -1,7 +1,8 @@
-export const makeQS = (types, select, pad = '', parent) => {
+export const makeQS = (types, select, pad = '', parents = []) => {
   const p = `${pad}  `
   const self = types[select]
   let str = ''
+  // console.log(`😶`, 'MAKE QS', select, pad.length, parents) // { types, select, pad, parent })
 
   for (const [name, type] of Object.entries(self.fields)) {
     switch (type.kind) {
@@ -11,12 +12,12 @@ export const makeQS = (types, select, pad = '', parent) => {
         break
       case 'OBJECT':
       case 'LIST':
-        if (type.ofType === parent) {
+        if (parents.includes(type.ofType)) {
           break
         }
         str += `${p}${name} `
         str += '{\n'
-        str += makeQS(types, type.ofType, p, parent || select)
+        str += makeQS(types, type.ofType, p, [ ...parents, select ])
         str += `${p}}`
         break
       default:
