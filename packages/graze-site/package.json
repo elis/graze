@@ -19,7 +19,7 @@
     "apollo-link-http": "^1.5.14",
     "axios": "^0.18.0",
     "dayjs": "^1.8.13",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "graphql": "^14.2.1",
     "graphql-tag": "^2.10.1",
     "gray-matter": "^4.0.2",
